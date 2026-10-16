@@ -135,6 +135,18 @@ export const runMigrations = async () => {
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
         updated_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
+
+      ALTER TABLE properties
+        ADD COLUMN IF NOT EXISTS seller_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        ADD COLUMN IF NOT EXISTS review_status VARCHAR(20) NOT NULL DEFAULT 'approved',
+        ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMP,
+        ADD COLUMN IF NOT EXISTS reviewed_by INTEGER REFERENCES users(id) ON DELETE SET NULL;
+
+      UPDATE properties
+      SET review_status = 'not_submitted'
+      WHERE seller_id IS NULL AND is_published = false AND review_status = 'approved';
+
+      CREATE INDEX IF NOT EXISTS properties_seller_id_idx ON properties(seller_id);
     `);
     
     logger.info('Migrations completed successfully');

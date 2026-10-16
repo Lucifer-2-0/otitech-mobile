@@ -21,8 +21,10 @@ const titles = {
     settings: 'Site Settings',
     users: 'User Management',
 };
-const canEdit = () => ['admin', 'staff'].includes(currentUser?.role);
+const canEditRecords = () => ['admin', 'staff'].includes(currentUser?.role);
+const canEditEnquiries = () => ['admin', 'moderator'].includes(currentUser?.role);
 const isAdmin = () => currentUser?.role === 'admin';
+const canViewEnquiries = () => ['admin', 'moderator'].includes(currentUser?.role);
 let currentUser;
 
 const getMain = () => document.querySelector('#main-content');
@@ -142,9 +144,17 @@ const setCurrentUser = (user) => {
     document.querySelector('#adminUserName').textContent = name;
     document.querySelector('#adminUserRole').textContent = pretty(user.role);
     document.querySelector('#adminUserAvatar').textContent = initials || 'OT';
-    document.querySelectorAll('[data-section="settings"]').forEach((link) => {
-        link.hidden = !isAdmin();
+    document.querySelectorAll('.admin-nav-link[data-section]').forEach((link) => {
+        const section = link.dataset.section;
+        const allowed = user.role === 'moderator'
+            ? section === 'enquiries'
+            : user.role === 'viewer'
+                ? ['dashboard', 'properties', 'projects'].includes(section)
+                : user.role !== 'seller';
+        link.hidden = !allowed || (section === 'settings' && !isAdmin()) || (section === 'users' && !isAdmin());
     });
+    const reviewBadge = document.querySelector('#pendingReviewCount');
+    if (reviewBadge) reviewBadge.hidden = !isAdmin();
 };
 
 const updateActiveNav = (view) => {
@@ -156,12 +166,15 @@ const updateActiveNav = (view) => {
 };
 
 const loadNavigationCounts = async () => {
+    if (currentUser?.role === 'moderator') return;
     try {
         const { data } = await adminApi.summary();
         document.querySelector('#propertiesCount').textContent = String(data.properties.total);
         document.querySelector('#projectsCount').textContent = String(data.projects.total);
-        document.querySelector('#enquiriesCount').textContent = String(data.enquiries.new);
+        if (data.enquiries) document.querySelector('#enquiriesCount').textContent = String(data.enquiries.new);
         document.querySelector('#usersCount').textContent = String(data.users?.total || 0);
+        const reviewBadge = document.querySelector('#pendingReviewCount');
+        if (reviewBadge) reviewBadge.textContent = String(data.properties.pendingReview || 0);
     } catch { /* The active page will show the API error if the service is unavailable. */ }
 };
 
@@ -169,8 +182,10 @@ const renderView = async () => {
     const mainEl = getMain();
     if (!mainEl) return;
     const view = window.location.hash.slice(1) || 'dashboard';
-    const selectedView = titles[view] ? view : 'dashboard';
-    if (view !== selectedView) history.replaceState(null, '', '#dashboard');
+    let selectedView = titles[view] ? view : 'dashboard';
+    if (currentUser?.role === 'moderator') selectedView = 'enquiries';
+    if (currentUser?.role === 'viewer' && selectedView === 'enquiries') selectedView = 'dashboard';
+    if (view !== selectedView) history.replaceState(null, '', `#${selectedView}`);
     updateActiveNav(selectedView);
 
     try {
@@ -202,28 +217,32 @@ const renderDashboard = async () => {
     if (!mainEl) return;
     const [summaryResponse, enquiriesResponse] = await Promise.all([
         adminApi.summary(),
-        enquiriesApi.list({ limit: 5 }),
+        canViewEnquiries() ? enquiriesApi.list({ limit: 5 }) : Promise.resolve({ data: [] }),
     ]);
     const summary = summaryResponse.data;
     const recent = enquiriesResponse.data || [];
     const greeting = currentUser.fullName?.split(' ')[0] || 'there';
+    const enquiryCard = summary.enquiries ? `<a class="admin-stat-card" href="#enquiries"><span class="admin-stat-label">Enquiries</span><strong>${summary.enquiries.total}</strong><span>${summary.enquiries.new} new · ${summary.enquiries.inProgress} in progress</span></a>` : '';
+    const enquiryPanel = canViewEnquiries() ? `<section class="admin-panel"><div class="admin-panel-heading"><div><p class="admin-eyebrow">INBOX</p><h2>Recent enquiries</h2></div><a href="#enquiries" class="admin-text-link">View all</a></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th scope="col">Contact</th><th scope="col">Service</th><th scope="col">Status</th><th scope="col">Received</th></tr></thead><tbody>${recentEnquiryRows(recent)}</tbody></table></div></section>` : '';
 
     mainEl.innerHTML = `
         <section class="admin-welcome"><div><p class="admin-eyebrow">OTI-TECH OVERVIEW</p><h2>Welcome back, ${escapeHtml(greeting)}</h2><p>Here is the latest activity across your property and project pages.</p></div><a class="btn btn-secondary" href="../index.html" target="_blank" rel="noopener noreferrer">Open public site <span aria-hidden="true">↗</span></a></section>
         <section class="admin-stat-grid" aria-label="Site totals">
             <a class="admin-stat-card" href="#properties"><span class="admin-stat-label">Properties</span><strong>${summary.properties.total}</strong><span>${summary.properties.published} published</span></a>
             <a class="admin-stat-card" href="#projects"><span class="admin-stat-label">Projects</span><strong>${summary.projects.total}</strong><span>${summary.projects.published} published</span></a>
-            <a class="admin-stat-card" href="#enquiries"><span class="admin-stat-label">Enquiries</span><strong>${summary.enquiries.total}</strong><span>${summary.enquiries.new} new · ${summary.enquiries.inProgress} in progress</span></a>
+            ${enquiryCard}
         </section>
-        <section class="admin-panel"><div class="admin-panel-heading"><div><p class="admin-eyebrow">INBOX</p><h2>Recent enquiries</h2></div><a href="#enquiries" class="admin-text-link">View all <span aria-hidden="true">→</span></a></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th scope="col">Contact</th><th scope="col">Service</th><th scope="col">Status</th><th scope="col">Received</th></tr></thead><tbody>${recentEnquiryRows(recent)}</tbody></table></div></section>`;
+        ${enquiryPanel}`;
 };
 
 const propertyCard = (property) => `
     <article class="admin-record-card">
         <div class="admin-record-top"><span class="admin-status admin-status--${escapeHtml(recordStatus(property))}">${escapeHtml(pretty(recordStatus(property)))}</span><span class="admin-publish-state ${isPublished(property) ? 'is-published' : ''}">${isPublished(property) ? 'Published' : 'Draft'}</span></div>
+        <p class="admin-muted">Review: ${escapeHtml(pretty(property.reviewStatus || (isPublished(property) ? 'approved' : 'not_submitted')))}</p>
         <h3>${escapeHtml(property.title)}</h3><p class="admin-record-meta">${escapeHtml(pretty(property.type))} · ${escapeHtml(pretty(property.purpose))} · ${escapeHtml(property.location)}</p>
+        ${property.seller ? `<p class="admin-record-meta">Seller: ${escapeHtml(property.seller.fullName)} · ${escapeHtml(property.seller.email)}</p>` : ''}
         <p class="admin-record-price">${escapeHtml(formatMoney(property.price, property.priceLabel))}</p>
-        <div class="admin-record-actions">${canEdit() ? `<button class="btn btn-secondary" type="button" data-action="edit-property" data-id="${property.id}">Edit</button><button class="btn btn-secondary" type="button" data-action="images-property" data-id="${property.id}">Images</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-action="delete-property" data-id="${property.id}">Delete</button>` : ''}</div>
+        <div class="admin-record-actions">${canEditRecords() ? `<button class="btn btn-secondary" type="button" data-action="edit-property" data-id="${property.id}">Edit</button><button class="btn btn-secondary" type="button" data-action="images-property" data-id="${property.id}">Images</button>` : ''}${isAdmin() && property.sellerId && property.reviewStatus === 'pending' ? `<button class="btn btn-primary" type="button" data-review-property="approve" data-id="${property.id}">Approve &amp; publish</button><button class="btn btn-danger" type="button" data-review-property="reject" data-id="${property.id}">Reject</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-action="delete-property" data-id="${property.id}">Delete</button>` : ''}</div>
     </article>`;
 
 const projectCard = (project) => `
@@ -231,24 +250,38 @@ const projectCard = (project) => `
         <div class="admin-record-top"><span class="admin-status admin-status--${escapeHtml(recordStatus(project))}">${escapeHtml(pretty(recordStatus(project)))}</span><span class="admin-publish-state ${isPublished(project) ? 'is-published' : ''}">${isPublished(project) ? 'Published' : 'Draft'}</span></div>
         <h3>${escapeHtml(project.title)}</h3><p class="admin-record-meta">${escapeHtml(pretty(project.category))} · ${escapeHtml(project.location)}${project.year ? ` · ${escapeHtml(project.year)}` : ''}</p>
         <p class="admin-record-price">${escapeHtml(formatMoney(project.value))}</p>
-        <div class="admin-record-actions">${canEdit() ? `<button class="btn btn-secondary" type="button" data-action="edit-project" data-id="${project.id}">Edit</button><button class="btn btn-secondary" type="button" data-action="images-project" data-id="${project.id}">Images</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-action="delete-project" data-id="${project.id}">Delete</button>` : ''}</div>
+        <div class="admin-record-actions">${canEditRecords() ? `<button class="btn btn-secondary" type="button" data-action="edit-project" data-id="${project.id}">Edit</button><button class="btn btn-secondary" type="button" data-action="images-project" data-id="${project.id}">Images</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-action="delete-project" data-id="${project.id}">Delete</button>` : ''}</div>
     </article>`;
 
-const renderProperties = async (location = '') => {
+const renderProperties = async (location = '', reviewStatus = '') => {
     const mainEl = getMain();
     if (!mainEl) return;
-    const response = await adminApi.properties({ limit: 50, location });
+    const response = await adminApi.properties({ limit: 50, location, reviewStatus });
     const items = response.data || [];
     mainEl.innerHTML = `
-        <section class="admin-page-toolbar"><div><p class="admin-eyebrow">INVENTORY</p><h2>Manage properties</h2><p>${response.pagination?.total ?? items.length} records, including unpublished drafts.</p></div><div class="admin-toolbar-actions">${canEdit() ? '<button class="btn btn-primary" type="button" data-action="new-property">Add property <span aria-hidden="true">+</span></button>' : ''}${isAdmin() ? '<button class="btn btn-secondary" type="button" data-action="import-properties">Import CSV</button>' : ''}</div></section>
-        <form class="admin-filter-form" id="propertySearch"><label for="propertyLocation">Search by location</label><input id="propertyLocation" name="location" type="search" value="${escapeHtml(location)}" placeholder="e.g. Lekki, Lagos"><button class="btn btn-secondary" type="submit">Search</button>${location ? '<a class="admin-text-link" href="#properties">Clear</a>' : ''}</form>
+        <section class="admin-page-toolbar"><div><p class="admin-eyebrow">INVENTORY</p><h2>Manage properties</h2><p>${response.pagination?.total ?? items.length} records, including unpublished drafts.</p></div><div class="admin-toolbar-actions">${canEditRecords() ? '<button class="btn btn-primary" type="button" data-action="new-property">Add property <span aria-hidden="true">+</span></button>' : ''}${isAdmin() ? '<button class="btn btn-secondary" type="button" data-action="import-properties">Import CSV</button>' : ''}</div></section>
+        <form class="admin-filter-form" id="propertySearch"><label for="propertyLocation">Search by location</label><input id="propertyLocation" name="location" type="search" value="${escapeHtml(location)}" placeholder="e.g. Lekki, Lagos">${isAdmin() ? `<label for="propertyReviewStatus">Review status</label><select id="propertyReviewStatus" name="reviewStatus"><option value="">All statuses</option>${[['pending', 'Pending review'], ['approved', 'Approved'], ['rejected', 'Rejected'], ['not_submitted', 'Not submitted']].map(([value, label]) => `<option value="${value}" ${reviewStatus === value ? 'selected' : ''}>${label}</option>`).join('')}</select>` : ''}<button class="btn btn-secondary" type="submit">Filter</button>${location || reviewStatus ? '<a class="admin-text-link" href="#properties">Clear</a>' : ''}</form>
         ${items.length ? `<section class="admin-record-grid" aria-label="Properties">${items.map(propertyCard).join('')}</section>` : '<section class="admin-empty-state"><h3>No properties found</h3><p>Add a property or change the location filter.</p></section>'}`;
 
     document.querySelector('#propertySearch').addEventListener('submit', (event) => {
         event.preventDefault();
-        renderProperties(new FormData(event.currentTarget).get('location').toString().trim());
+        const filters = new FormData(event.currentTarget);
+        renderProperties(filters.get('location').toString().trim(), filters.get('reviewStatus')?.toString() || '');
     });
     bindRecordActions('property', items);
+    mainEl.querySelectorAll('[data-review-property]').forEach((button) => button.addEventListener('click', async () => {
+        const decision = button.dataset.reviewProperty;
+        if (decision === 'reject' && !await confirmAction('Reject this seller listing? The seller can edit and resubmit it.')) return;
+        button.disabled = true;
+        try {
+            const response = await adminApi.reviewProperty(button.dataset.id, decision);
+            showToast(response.message || (decision === 'approve' ? 'Listing approved and published.' : 'Listing rejected.'));
+            await renderProperties(location, reviewStatus);
+        } catch (error) {
+            showToast(error.message, 'error');
+            button.disabled = false;
+        }
+    }));
 };
 
 const renderProjects = async (location = '') => {
@@ -257,7 +290,7 @@ const renderProjects = async (location = '') => {
     const response = await adminApi.projects({ limit: 50, location });
     const items = response.data || [];
     mainEl.innerHTML = `
-        <section class="admin-page-toolbar"><div><p class="admin-eyebrow">PORTFOLIO</p><h2>Manage projects</h2><p>${response.pagination?.total ?? items.length} records, including unpublished drafts.</p></div><div class="admin-toolbar-actions">${canEdit() ? '<button class="btn btn-primary" type="button" data-action="new-project">Add project <span aria-hidden="true">+</span></button>' : ''}${isAdmin() ? '<button class="btn btn-secondary" type="button" data-action="import-projects">Import CSV</button>' : ''}</div></section>
+        <section class="admin-page-toolbar"><div><p class="admin-eyebrow">PORTFOLIO</p><h2>Manage projects</h2><p>${response.pagination?.total ?? items.length} records, including unpublished drafts.</p></div><div class="admin-toolbar-actions">${canEditRecords() ? '<button class="btn btn-primary" type="button" data-action="new-project">Add project <span aria-hidden="true">+</span></button>' : ''}${isAdmin() ? '<button class="btn btn-secondary" type="button" data-action="import-projects">Import CSV</button>' : ''}</div></section>
         <form class="admin-filter-form" id="projectSearch"><label for="projectLocation">Search by location</label><input id="projectLocation" name="location" type="search" value="${escapeHtml(location)}" placeholder="e.g. Ikeja, Lagos"><button class="btn btn-secondary" type="submit">Search</button>${location ? '<a class="admin-text-link" href="#projects">Clear</a>' : ''}</form>
         ${items.length ? `<section class="admin-record-grid" aria-label="Projects">${items.map(projectCard).join('')}</section>` : '<section class="admin-empty-state"><h3>No projects found</h3><p>Add a project or change the location filter.</p></section>'}`;
 
@@ -528,16 +561,21 @@ const serviceNames = {
 const renderEnquiries = async (statusFilter = '') => {
     const mainEl = getMain();
     if (!mainEl) return;
-    const response = await enquiriesApi.list({ limit: 50, status: statusFilter });
+    const [response, assigneesResponse] = await Promise.all([
+        enquiriesApi.list({ limit: 50, status: statusFilter }),
+        isAdmin() ? enquiriesApi.assignees() : Promise.resolve({ data: [] }),
+    ]);
     const items = response.data || [];
+    const assignees = assigneesResponse.data || [];
     mainEl.innerHTML = `
         <section class="admin-page-toolbar"><div><p class="admin-eyebrow">CLIENT MESSAGES</p><h2>Enquiries</h2><p>Track new requests and follow up with clients.</p></div><div class="admin-toolbar-actions">${isAdmin() ? '<button class="btn btn-secondary" type="button" data-action="import-enquiries">Import CSV</button>' : ''}</div></section>
         <form class="admin-filter-form" id="enquiryFilter"><label for="enquiryStatus">Filter by status</label><select id="enquiryStatus" name="status"><option value="">All statuses</option>${options(statusOptions, statusFilter)}</select></form>
         ${items.length ? `<section class="admin-enquiry-list" aria-label="Enquiries">${items.map((item) => `
-            <article class="admin-enquiry-card"><header><div><span class="admin-status admin-status--${escapeHtml(item.status)}">${escapeHtml(pretty(item.status))}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(serviceNames[item.service] || pretty(item.service))} · ${escapeHtml(formatDate(item.createdAt || item.created_at))}</p></div><label class="admin-field admin-enquiry-status"><span>Status</span><select data-enquiry-status="${item.id}" ${canEdit() ? '' : 'disabled'}>${options(statusOptions, item.status)}</select></label></header>
+            <article class="admin-enquiry-card"><header><div><span class="admin-status admin-status--${escapeHtml(item.status)}">${escapeHtml(pretty(item.status))}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(serviceNames[item.service] || pretty(item.service))} · ${escapeHtml(formatDate(item.createdAt || item.created_at))}</p></div><label class="admin-field admin-enquiry-status"><span>Status</span><select data-enquiry-status="${item.id}" ${canEditEnquiries() ? '' : 'disabled'}>${options(statusOptions, item.status)}</select></label></header>
+                ${isAdmin() ? `<label class="admin-field"><span>Assign to moderator</span><select data-enquiry-assignee="${item.id}"><option value="">Admin inbox</option>${assignees.map((assignee) => `<option value="${assignee.id}" ${Number(item.assignedTo) === Number(assignee.id) ? 'selected' : ''}>${escapeHtml(assignee.fullName)}</option>`).join('')}</select></label>` : currentUser.role === 'moderator' ? '<p class="admin-muted">Assigned to you</p>' : ''}
                 <div class="admin-contact-links"><a href="tel:${encodeURIComponent(item.phone)}">${escapeHtml(item.phone)}</a>${item.email ? `<a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>` : ''}</div><p class="admin-enquiry-message">${escapeHtml(item.message)}</p>
-                <label class="admin-field"><span>Staff notes</span><textarea rows="2" data-enquiry-notes="${item.id}" ${canEdit() ? '' : 'disabled'}>${escapeHtml(item.notes || '')}</textarea></label>
-                <footer><span class="admin-muted">Received ${escapeHtml(formatDate(item.createdAt || item.created_at))}</span>${canEdit() ? `<button class="btn btn-secondary" type="button" data-save-enquiry="${item.id}">Save updates</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-delete-enquiry="${item.id}">Delete</button>` : ''}</footer>
+                <label class="admin-field"><span>Staff notes</span><textarea rows="2" data-enquiry-notes="${item.id}" ${canEditEnquiries() ? '' : 'disabled'}>${escapeHtml(item.notes || '')}</textarea></label>
+                <footer><span class="admin-muted">Received ${escapeHtml(formatDate(item.createdAt || item.created_at))}</span>${canEditEnquiries() ? `<button class="btn btn-secondary" type="button" data-save-enquiry="${item.id}">Save updates</button>` : ''}${isAdmin() ? `<button class="btn btn-danger" type="button" data-delete-enquiry="${item.id}">Delete</button>` : ''}</footer>
             </article>`).join('')}</section>` : '<section class="admin-empty-state"><h3>No enquiries match this filter</h3><p>New client requests will appear here.</p></section>'}`;
 
 document.querySelector('#enquiryFilter').addEventListener('change', (event) => {
@@ -556,7 +594,12 @@ document.querySelector('#enquiryFilter').addEventListener('change', (event) => {
         const notes = mainEl.querySelector(`[data-enquiry-notes="${id}"]`).value;
         button.disabled = true;
         try {
-            await enquiriesApi.update(id, { status: statusValue, notes });
+            const payload = { status: statusValue, notes };
+            if (isAdmin()) {
+                const selectedAssignee = mainEl.querySelector(`[data-enquiry-assignee="${id}"]`)?.value || '';
+                payload.assignedTo = selectedAssignee ? Number(selectedAssignee) : null;
+            }
+            await enquiriesApi.update(id, payload);
             showToast('Enquiry updates saved.');
         } catch (error) { showToast(error.message, 'error'); }
         finally { button.disabled = false; }
@@ -582,7 +625,7 @@ const renderUsers = async (search = '', page = 1) => {
         const pagination = response.pagination || {};
 
         mainEl.innerHTML = `
-            <section class="admin-page-toolbar"><div><p class="admin-eyebrow">USER MANAGEMENT</p><h2>Staff accounts</h2><p>Invite team members, assign roles, and manage access.</p></div>${isAdmin() ? '<button class="btn btn-primary" type="button" data-action="new-user">Invite user <span aria-hidden="true">+</span></button>' : ''}</section>
+            <section class="admin-page-toolbar"><div><p class="admin-eyebrow">USER MANAGEMENT</p><h2>User accounts</h2><p>Manage team access, moderators, and seller accounts.</p></div>${isAdmin() ? '<button class="btn btn-primary" type="button" data-action="new-user">Invite user <span aria-hidden="true">+</span></button>' : ''}</section>
             <form class="admin-filter-form" id="userSearch"><label for="userSearchInput">Search</label><input id="userSearchInput" name="search" type="search" value="${escapeHtml(search)}" placeholder="Search by name or email"><button class="btn btn-secondary" type="submit">Search</button>${search ? '<a class="admin-text-link" href="#users">Clear</a>' : ''}</form>
             ${users.length ? `<section class="admin-user-table-wrap"><table class="admin-table"><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Last login</th><th scope="col">Actions</th></tr></thead><tbody>${users.map((user) => `
                 <tr>
@@ -653,7 +696,7 @@ const openUserEditor = (user = null) => {
             <div class="admin-form-grid">
                 <label class="admin-field"><span>Full name<b aria-hidden="true">*</b></span><input name="fullName" value="${escapeHtml(user?.fullName || '')}" required></label>
                 <label class="admin-field"><span>Email<b aria-hidden="true">*</b></span><input name="email" type="email" value="${escapeHtml(user?.email || '')}" ${!editing ? 'required' : ''} ${editing ? 'disabled' : ''}></label>
-                <label class="admin-field"><span>Role<b aria-hidden="true">*</b></span><select name="role" required>${[['admin', 'Administrator'], ['staff', 'Staff'], ['viewer', 'Viewer']].map(([v, l]) => `<option value="${v}" ${user?.role === v || (!user && v === 'staff') ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+                <label class="admin-field"><span>Role<b aria-hidden="true">*</b></span><select name="role" required>${[['admin', 'Administrator'], ['staff', 'Staff'], ['moderator', 'Enquiries moderator'], ['viewer', 'Viewer'], ['seller', 'Seller']].map(([v, l]) => `<option value="${v}" ${user?.role === v || (!user && v === 'staff') ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
                 <label class="admin-field admin-checkbox"><input type="checkbox" name="isActive" ${user ? (user.isActive ? 'checked' : '') : 'checked'}><span>Active</span></label>
                 ${!editing ? `
                     <label class="admin-field"><span>Password<b aria-hidden="true">*</b></span><input name="password" type="password" required minlength="12" placeholder="Min 12 chars, upper, lower, number, symbol"></label>
@@ -928,22 +971,22 @@ window.addEventListener('hashchange', renderView);
 window.addEventListener('otitech:session-expired', logout);
 
 const start = async () => {
-    // Check for Supabase session first
+    const localToken = sessionStorage.getItem(ACCESS_TOKEN_KEY);
     const { session } = await getSession();
-    if (!session) return logout();
+    if (!session && !localToken) return logout();
 
     try {
-        // Get current user from Supabase
-        const { user, error } = await getCurrentUser();
-        if (error || !user) {
-            return logout();
+        if (!localToken) {
+            const { user, error } = await getCurrentUser();
+            if (error || !user) return logout();
         }
-        
-        // Fetch user profile from our API to get role
+
         const response = await authApi.me();
+        if (response.data.role === 'seller') return window.location.replace('../seller/dashboard.html');
         setCurrentUser(response.data);
         bindSidebar();
-        loadNavigationCounts();
+        if (response.data.role === 'moderator') history.replaceState(null, '', '#enquiries');
+        else loadNavigationCounts();
         await renderView();
     } catch (error) {
         logout();

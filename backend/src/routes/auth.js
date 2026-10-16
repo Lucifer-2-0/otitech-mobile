@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { userModel } from '../models/index.js';
 import { validate } from '../middleware/validate.js';
 import { authenticate, authorize } from '../middleware/auth.js';
@@ -15,12 +16,13 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-const registerSchema = z.object({
+const registrationSchema = z.object({
   email: z.string().email().transform((email) => email.toLowerCase()),
   password: z.string().min(12),
   fullName: z.string().trim().min(1).max(255),
-  role: z.enum(['staff', 'viewer']).optional(),
-}).superRefine(async (data, ctx) => {
+});
+
+const enforcePasswordPolicy = (schema) => schema.superRefine(async (data, ctx) => {
   const result = await validatePassword(data.password);
   if (!result.valid) {
     result.errors.forEach((error) => {
@@ -31,6 +33,25 @@ const registerSchema = z.object({
       });
     });
   }
+});
+
+const registerSchema = enforcePasswordPolicy(registrationSchema.extend({
+  role: z.enum(['staff', 'viewer', 'moderator']).optional(),
+}));
+const sellerRegisterSchema = enforcePasswordPolicy(registrationSchema);
+
+const createSession = (user) => ({
+  user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role },
+  accessToken: jwt.sign(
+    { id: user.id, email: user.email, role: user.role, fullName: user.fullName },
+    config.jwt.secret,
+    { expiresIn: config.jwt.expiresIn },
+  ),
+  refreshToken: jwt.sign(
+    { id: user.id, type: 'refresh' },
+    config.jwt.refreshSecret,
+    { expiresIn: config.jwt.refreshExpiresIn },
+  ),
 });
 
 const changePasswordSchema = z.object({
@@ -71,33 +92,39 @@ router.post('/login', authRateLimiter, bruteForceProtection, validate(loginSchem
 
     await userModel.update(user.id, { lastLoginAt: new Date() });
 
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, fullName: user.fullName },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: user.id, type: 'refresh' },
-      config.jwt.refreshSecret,
-      { expiresIn: config.jwt.refreshExpiresIn }
-    );
+    const session = createSession(user);
 
     resetLoginAttempts(req.ip);
 
     res.json({
       success: true,
       data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          role: user.role,
-        },
-        accessToken,
-        refreshToken,
+        ...session,
       },
     });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/register-seller', authRateLimiter, validate(sellerRegisterSchema), async (req, res, next) => {
+  try {
+    const existing = await userModel.findByEmail(req.validatedBody.email);
+    if (existing) {
+      return res.status(409).json({
+        success: false,
+        error: { code: 'EMAIL_EXISTS', message: 'Email already registered' },
+      });
+    }
+
+    const user = await userModel.create({
+      email: req.validatedBody.email,
+      passwordHash: await bcrypt.hash(req.validatedBody.password, 12),
+      fullName: req.validatedBody.fullName,
+      role: 'seller',
+      isActive: true,
+    });
+    res.status(201).json({ success: true, data: createSession(user) });
   } catch (err) {
     next(err);
   }
@@ -123,29 +150,12 @@ router.post('/register', authenticate, authorize('admin'), validate(registerSche
       role: req.validatedBody.role || 'staff',
     });
 
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, fullName: user.fullName },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: user.id, type: 'refresh' },
-      config.jwt.refreshSecret,
-      { expiresIn: config.jwt.refreshExpiresIn }
-    );
+    const session = createSession(user);
 
     res.status(201).json({
       success: true,
       data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          role: user.role,
-        },
-        accessToken,
-        refreshToken,
+        ...session,
       },
     });
   } catch (err) {
@@ -190,23 +200,13 @@ router.post('/refresh', async (req, res, next) => {
       });
     }
 
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, fullName: user.fullName },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn }
-    );
-
-    const newRefreshToken = jwt.sign(
-      { id: user.id, type: 'refresh' },
-      config.jwt.refreshSecret,
-      { expiresIn: config.jwt.refreshExpiresIn }
-    );
+    const session = createSession(user);
 
     res.json({
       success: true,
       data: {
-        accessToken,
-        refreshToken: newRefreshToken,
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
       },
     });
   } catch (err) {

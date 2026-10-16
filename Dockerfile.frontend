@@ -15,6 +15,7 @@ COPY js/ /usr/share/nginx/html/js/
 COPY components/ /usr/share/nginx/html/components/
 COPY pages/ /usr/share/nginx/html/pages/
 COPY admin/ /usr/share/nginx/html/admin/
+COPY seller/ /usr/share/nginx/html/seller/
 COPY --from=site-metadata /site/sitemap.xml /usr/share/nginx/html/sitemap.xml
 COPY --from=site-metadata /site/robots.txt /usr/share/nginx/html/robots.txt
 COPY nginx.conf /etc/nginx/templates/default.conf.template

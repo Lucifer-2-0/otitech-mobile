@@ -3,6 +3,7 @@ export const navigationHTML = (currentPage = 'home', basePath = '') => {
         { href: `${basePath}index.html`, label: 'Home', id: 'home' },
         { href: `${basePath}pages/services.html`, label: 'Services', id: 'services' },
         { href: `${basePath}pages/properties.html`, label: 'Properties', id: 'properties' },
+        { href: `${basePath}seller/index.html`, label: 'List a Property', id: 'seller' },
         { href: `${basePath}pages/projects.html`, label: 'Projects', id: 'projects' },
         { href: `${basePath}pages/about.html`, label: 'About', id: 'about' },
         { href: `${basePath}pages/contact.html`, label: 'Contact', id: 'contact' },

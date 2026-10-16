@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="description" content="Manage your OTI-TECH property submissions and review status.">
+    <meta name="theme-color" content="#24104f">
+    <title>Seller Workspace | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/seller.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <meta name="supabase-url" content="https://kmeqjvhscqjisososezt.supabase.co">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZXFqdmhzY3FqaXNvc29zZXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTUxNjYsImV4cCI6MjEwNjI3MTE2Nn0.YhU2V4Uly0f1bFITGAJU_Vm4Z0UKvSG7dVtoLULY6AQ">
+    <script>document.documentElement.classList.add('js-enabled');</script>
+</head>
+<body class="seller-page">
+    <a class="skip-link" href="#seller-main">Skip to main content</a>
+    <header class="seller-topbar">
+        <a class="seller-brand" href="../index.html">OTI-TECH</a>
+        <div class="seller-account">
+            <span><strong id="sellerName">Seller</strong><small id="sellerEmail"></small></span>
+            <button class="btn btn-secondary" id="sellerLogout" type="button">Sign out</button>
+        </div>
+    </header>
+    <main id="seller-main" class="seller-dashboard">
+        <section class="seller-dashboard-heading">
+            <p class="seller-eyebrow">SELLER WORKSPACE</p>
+            <h1>Your property listings</h1>
+            <p>Submit a property and follow it through admin review. It will not appear to buyers until approved.</p>
+        </section>
+        <div class="seller-dashboard-grid">
+            <section class="seller-panel" aria-labelledby="listing-form-title">
+                <h2 id="listing-form-title">Add a property</h2>
+                <p class="seller-muted">Provide accurate details. An admin reviews every submission before publication.</p>
+                <form id="sellerPropertyForm" class="seller-form">
+                    <input type="hidden" name="propertyId">
+                    <label class="seller-field">Property title<input name="title" maxlength="255" required></label>
+                    <div class="seller-form-row">
+                        <label class="seller-field">Property type<select name="type" required><option value="">Choose type</option><option value="land">Land</option><option value="house">House</option><option value="apartment">Apartment</option><option value="commercial">Commercial</option></select></label>
+                        <label class="seller-field">Purpose<select name="purpose" required><option value="">Choose purpose</option><option value="sale">For sale</option><option value="rent">For rent</option></select></label>
+                    </div>
+                    <label class="seller-field">Location<input name="location" maxlength="255" placeholder="Area, city, state" required></label>
+                    <div class="seller-form-row">
+                        <label class="seller-field">Size<input name="size" maxlength="100" placeholder="e.g. 200 sqm"></label>
+                        <label class="seller-field">Price in naira<input name="price" type="number" min="1" step="1" inputmode="numeric"></label>
+                    </div>
+                    <label class="seller-field">Price display label<input name="priceLabel" maxlength="50" placeholder="Optional, e.g. ₦50M"></label>
+                    <label class="seller-field">Description<textarea name="description" rows="5" maxlength="10000"></textarea></label>
+                    <label class="seller-field">Features <small>One feature per line</small><textarea name="features" rows="4" placeholder="Parking&#10;24-hour security"></textarea></label>
+                    <label class="seller-field">Property photos<input name="images" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><small>Up to 6 photos, 5 MB each. Add photos after filling in the property details.</small></label>
+                    <p id="sellerPropertyStatus" class="seller-form-status" role="status" aria-live="polite"></p>
+                    <div class="seller-form-actions"><button class="btn btn-primary" type="submit">Submit for review</button><button class="btn btn-secondary" id="cancelListingEdit" type="button" hidden>Cancel edit</button></div>
+                </form>
+            </section>
+            <aside class="seller-review-note">
+                <h2>How review works</h2>
+                <ol>
+                    <li>You submit property details and photos.</li>
+                    <li>An OTI-TECH admin reviews the listing.</li>
+                    <li>Approved listings are published on the public properties page.</li>
+                </ol>
+                <p>Buyer contact details and enquiries stay with OTI-TECH and any moderator assigned by an admin.</p>
+            </aside>
+        </div>
+        <section class="seller-listings-section" aria-labelledby="seller-listings-title">
+            <div class="seller-section-heading"><div><p class="seller-eyebrow">YOUR SUBMISSIONS</p><h2 id="seller-listings-title">Listing status</h2></div><button class="btn btn-secondary" id="refreshListings" type="button">Refresh</button></div>
+            <p id="sellerListingsStatus" class="seller-form-status" role="status" aria-live="polite"></p>
+            <div id="sellerListings" class="seller-listings" aria-live="polite"></div>
+        </section>
+    </main>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

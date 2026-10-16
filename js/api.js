@@ -4,12 +4,39 @@ const configuredApiBase = typeof document !== 'undefined'
 const isLocalPreview = typeof window !== 'undefined'
     && ['localhost', '127.0.0.1'].includes(window.location.hostname)
     && window.location.port === '4173';
-export const API_BASE = (configuredApiBase || (isLocalPreview
+export const API_BASE = (isLocalPreview
     ? `${window.location.protocol}//${window.location.hostname}:3000/api/v1`
-    : '/api/v1')).replace(/\/$/, '');
+    : (configuredApiBase || '/api/v1')).replace(/\/$/, '');
 
 // Import Supabase client for auth token
 import { supabase } from './supabase.js';
+
+const ACCESS_TOKEN_KEY = 'otitech_access_token';
+const REFRESH_TOKEN_KEY = 'otitech_refresh_token';
+
+const getLocalAccessToken = () => typeof sessionStorage !== 'undefined'
+    ? sessionStorage.getItem(ACCESS_TOKEN_KEY)
+    : null;
+
+const refreshLocalSession = async () => {
+    if (typeof sessionStorage === 'undefined') return false;
+    const refreshToken = sessionStorage.getItem(REFRESH_TOKEN_KEY);
+    if (!refreshToken) return false;
+    try {
+        const response = await fetch(`${API_BASE}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken }),
+        });
+        if (!response.ok) return false;
+        const result = await response.json();
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
+        sessionStorage.setItem(REFRESH_TOKEN_KEY, result.data.refreshToken);
+        return true;
+    } catch {
+        return false;
+    }
+};
 
 class ApiError extends Error {
     constructor(message, status, data) {
@@ -24,7 +51,7 @@ async function getSupabaseAccessToken() {
     return session?.access_token;
 }
 
-async function request(endpoint, options = {}) {
+async function request(endpoint, options = {}, retried = false) {
     const headers = new Headers(options.headers || {});
     const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
     let body = options.body;
@@ -34,13 +61,17 @@ async function request(endpoint, options = {}) {
         if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
     }
 
-    // Use Supabase access token for authentication
-    const token = await getSupabaseAccessToken();
+    // Local seller/moderator sessions use the backend JWT; existing admin Supabase sessions remain supported.
+    const token = getLocalAccessToken() || await getSupabaseAccessToken();
     if (token && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`);
 
     const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers, body });
 
-    if (response.status === 401 && !['/auth/login', '/auth/register', '/auth/refresh'].includes(endpoint)) {
+    if (response.status === 401 && getLocalAccessToken() && !retried && !['/auth/login', '/auth/register-seller', '/auth/refresh'].includes(endpoint)) {
+        if (await refreshLocalSession()) return request(endpoint, options, true);
+    }
+
+    if (response.status === 401 && !['/auth/login', '/auth/register', '/auth/register-seller', '/auth/refresh'].includes(endpoint)) {
         // Session expired or invalid
         window.dispatchEvent(new CustomEvent('otitech:session-expired'));
         throw new ApiError('Your session has expired. Please sign in again.', 401);
@@ -87,6 +118,9 @@ export const propertiesApi = {
     update: (id, data) => api.patch(`/properties/${id}`, data),
 
     delete: (id) => api.delete(`/properties/${id}`),
+    mine: () => api.get('/properties/mine'),
+    createSeller: (data) => api.post('/properties/seller', data),
+    updateSeller: (id, data) => api.patch(`/properties/mine/${id}`, data),
 };
 
 export const projectsApi = {
@@ -127,12 +161,15 @@ export const enquiriesApi = {
     update: (id, data) => api.patch(`/enquiries/${id}`, data),
 
     delete: (id) => api.delete(`/enquiries/${id}`),
+    assignees: () => api.get('/enquiries/assignees'),
 };
 
 export const authApi = {
     login: (email, password) => api.post('/auth/login', { email, password }),
 
     register: (data) => api.post('/auth/register', data),
+
+    registerSeller: (data) => api.post('/auth/register-seller', data),
 
     refresh: (refreshToken) => api.post('/auth/refresh', { refreshToken }),
 
@@ -183,7 +220,13 @@ export const mediaApi = {
 export const adminApi = {
     summary: () => api.get('/admin/summary'),
 
-    properties: (params = {}) => api.get(`/properties/admin?${new URLSearchParams(params)}`),
+    properties: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') search.append(key, value);
+        });
+        return api.get(`/properties/admin?${search.toString()}`);
+    },
 
     projects: (params = {}) => api.get(`/projects/admin?${new URLSearchParams(params)}`),
 
@@ -194,6 +237,8 @@ export const adminApi = {
     updateUser: (id, data) => api.patch(`/admin/users/${id}`, data),
 
     deleteUser: (id) => api.delete(`/admin/users/${id}`),
+
+    reviewProperty: (id, decision) => api.patch(`/properties/admin/${id}/review`, { decision }),
 };
 
 export { ApiError };

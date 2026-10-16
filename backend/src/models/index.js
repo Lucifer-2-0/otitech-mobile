@@ -73,7 +73,7 @@ export class PropertyModel extends BaseModel {
 
   async findPublished(options = {}) {
     const { type, purpose, status, location, minPrice, maxPrice, limit, offset } = options;
-    const conditions = [eq(this.table.isPublished, true)];
+    const conditions = [eq(this.table.isPublished, true), eq(this.table.reviewStatus, 'approved')];
 
     if (type) conditions.push(eq(this.table.type, type));
     if (purpose) conditions.push(eq(this.table.purpose, purpose));
@@ -100,20 +100,48 @@ export class PropertyModel extends BaseModel {
     }
     return records.map((record) => {
       const images = imagesByProperty.get(record.id) || [];
-      return { ...record, images, image: images.find((image) => image.isCover)?.url || images[0]?.url || null };
+      const { sellerId, reviewStatus, reviewedAt, reviewedBy, ...publicRecord } = record;
+      return { ...publicRecord, images, image: images.find((image) => image.isCover)?.url || images[0]?.url || null };
     });
   }
 
   async findBySlug(slug) {
-    const property = await this.findOne(and(eq(this.table.slug, slug), eq(this.table.isPublished, true)));
+    const property = await this.findOne(and(
+      eq(this.table.slug, slug),
+      eq(this.table.isPublished, true),
+      eq(this.table.reviewStatus, 'approved'),
+    ));
     if (!property) return null;
     const images = await dbInstance.select().from(schema.propertyImages)
       .where(eq(schema.propertyImages.propertyId, property.id)).orderBy(asc(schema.propertyImages.sortOrder));
-    return { ...property, images };
+    const { sellerId, reviewStatus, reviewedAt, reviewedBy, ...publicRecord } = property;
+    return { ...publicRecord, images };
+  }
+
+  async findOwnedBy(sellerId) {
+    const records = await this.findAll({
+      where: eq(this.table.sellerId, sellerId),
+      orderBy: desc(this.table.createdAt),
+      limit: 50,
+    });
+    if (!records.length) return records;
+    const imageRows = await dbInstance.select().from(schema.propertyImages)
+      .where(inArray(schema.propertyImages.propertyId, records.map((record) => record.id)))
+      .orderBy(asc(schema.propertyImages.sortOrder));
+    const imagesByProperty = new Map();
+    for (const image of imageRows) {
+      const images = imagesByProperty.get(image.propertyId) || [];
+      images.push(image);
+      imagesByProperty.set(image.propertyId, images);
+    }
+    return records.map((record) => {
+      const images = imagesByProperty.get(record.id) || [];
+      return { ...record, images, image: images.find((image) => image.isCover)?.url || images[0]?.url || null };
+    });
   }
 
   async findAllForAdmin(options = {}) {
-    const { type, purpose, status, location, minPrice, maxPrice, limit, offset } = options;
+    const { type, purpose, status, location, minPrice, maxPrice, reviewStatus, limit, offset } = options;
     const conditions = [];
     if (type) conditions.push(eq(this.table.type, type));
     if (purpose) conditions.push(eq(this.table.purpose, purpose));
@@ -121,16 +149,23 @@ export class PropertyModel extends BaseModel {
     if (location) conditions.push(ilike(this.table.location, `%${location}%`));
     if (minPrice) conditions.push(gte(this.table.price, minPrice));
     if (maxPrice) conditions.push(lte(this.table.price, maxPrice));
-    return super.findAll({
+    if (reviewStatus) conditions.push(eq(this.table.reviewStatus, reviewStatus));
+    const records = await super.findAll({
       where: conditions.length ? and(...conditions) : undefined,
       orderBy: desc(this.table.createdAt),
       limit,
       offset,
     });
+    const sellerIds = [...new Set(records.map((record) => record.sellerId).filter(Boolean))];
+    if (!sellerIds.length) return records;
+    const sellers = await dbInstance.select({ id: schema.users.id, fullName: schema.users.fullName, email: schema.users.email })
+      .from(schema.users).where(inArray(schema.users.id, sellerIds));
+    const sellersById = new Map(sellers.map((seller) => [seller.id, seller]));
+    return records.map((record) => ({ ...record, seller: sellersById.get(record.sellerId) || null }));
   }
 
   async getAdminTotalCount(filters = {}) {
-    const { type, purpose, status, location, minPrice, maxPrice } = filters;
+    const { type, purpose, status, location, minPrice, maxPrice, reviewStatus } = filters;
     const conditions = [];
     if (type) conditions.push(eq(this.table.type, type));
     if (purpose) conditions.push(eq(this.table.purpose, purpose));
@@ -138,11 +173,12 @@ export class PropertyModel extends BaseModel {
     if (location) conditions.push(ilike(this.table.location, `%${location}%`));
     if (minPrice) conditions.push(gte(this.table.price, minPrice));
     if (maxPrice) conditions.push(lte(this.table.price, maxPrice));
+    if (reviewStatus) conditions.push(eq(this.table.reviewStatus, reviewStatus));
     return this.count(conditions.length ? and(...conditions) : undefined);
   }
 
   async getTotalCount(filters = {}) {
-    const conditions = [eq(this.table.isPublished, true)];
+    const conditions = [eq(this.table.isPublished, true), eq(this.table.reviewStatus, 'approved')];
     const { type, purpose, status, location, minPrice, maxPrice } = filters;
 
     if (type) conditions.push(eq(this.table.type, type));
@@ -249,7 +285,7 @@ export class EnquiryModel extends BaseModel {
 
     if (status) conditions.push(eq(this.table.status, status));
     if (service) conditions.push(eq(this.table.service, service));
-    if (assignedTo) conditions.push(eq(this.table.assignedTo, assignedTo));
+    if (assignedTo !== undefined && assignedTo !== null) conditions.push(eq(this.table.assignedTo, assignedTo));
 
     return super.findAll({
       where: conditions.length ? and(...conditions) : undefined,
@@ -265,7 +301,7 @@ export class EnquiryModel extends BaseModel {
 
     if (status) conditions.push(eq(this.table.status, status));
     if (service) conditions.push(eq(this.table.service, service));
-    if (assignedTo) conditions.push(eq(this.table.assignedTo, assignedTo));
+    if (assignedTo !== undefined && assignedTo !== null) conditions.push(eq(this.table.assignedTo, assignedTo));
 
     return this.count(conditions.length ? and(...conditions) : undefined);
   }
@@ -285,6 +321,13 @@ export class UserModel extends BaseModel {
       where: eq(this.table.isActive, true),
       orderBy: asc(this.table.fullName),
     });
+  }
+
+  async findEnquiryAssignees() {
+    return dbInstance.select({ id: this.table.id, email: this.table.email, fullName: this.table.fullName, role: this.table.role })
+      .from(this.table)
+      .where(and(eq(this.table.isActive, true), eq(this.table.role, 'moderator')))
+      .orderBy(asc(this.table.fullName));
   }
 }
 

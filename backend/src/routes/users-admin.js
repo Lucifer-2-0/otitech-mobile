@@ -6,10 +6,13 @@ import { AppError } from '../middleware/errorHandler.js';
 import { eq, desc, and, or, ilike, count } from 'drizzle-orm';
 import * as schema from '../models/schema.js';
 import { getDb } from '../config/database.js';
+import { validatePassword } from '../utils/password.js';
 
 const router = Router();
 
 const db = getDb();
+const allowedRoles = ['admin', 'staff', 'viewer', 'moderator', 'seller'];
+const safeUser = ({ passwordHash, ...user }) => user;
 
 router.get('/', authenticate, authorize('admin'), async (req, res, next) => {
   try {
@@ -31,7 +34,16 @@ router.get('/', authenticate, authorize('admin'), async (req, res, next) => {
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
     const [users, totalResult] = await Promise.all([
-      db.select().from(schema.users).where(whereClause).orderBy(desc(schema.users.createdAt)).limit(limit).offset(offset),
+      db.select({
+        id: schema.users.id,
+        email: schema.users.email,
+        fullName: schema.users.fullName,
+        role: schema.users.role,
+        isActive: schema.users.isActive,
+        lastLoginAt: schema.users.lastLoginAt,
+        createdAt: schema.users.createdAt,
+        updatedAt: schema.users.updatedAt,
+      }).from(schema.users).where(whereClause).orderBy(desc(schema.users.createdAt)).limit(limit).offset(offset),
       db.select({ count: count() }).from(schema.users).where(whereClause),
     ]);
 
@@ -59,12 +71,14 @@ router.post('/', authenticate, authorize('admin'), async (req, res, next) => {
     if (!email || !password || !fullName) {
       throw AppError.badRequest('Email, password, and full name are required');
     }
-    if (!['admin', 'staff', 'viewer'].includes(role)) {
-      throw AppError.badRequest('Role must be admin, staff, or viewer');
+    if (!allowedRoles.includes(role)) {
+      throw AppError.badRequest(`Role must be one of: ${allowedRoles.join(', ')}`);
     }
     if (typeof isActive !== 'boolean') {
       throw AppError.badRequest('Active status must be a boolean');
     }
+    const passwordPolicy = await validatePassword(password);
+    if (!passwordPolicy.valid) throw AppError.badRequest(passwordPolicy.errors.join(' '));
 
     const existing = await userModel.findByEmail(email.toLowerCase());
     if (existing) {
@@ -80,7 +94,7 @@ router.post('/', authenticate, authorize('admin'), async (req, res, next) => {
       isActive,
     });
 
-    res.status(201).json({ success: true, data: user });
+    res.status(201).json({ success: true, data: safeUser(user) });
   } catch (err) {
     next(err);
   }
@@ -89,8 +103,20 @@ router.post('/', authenticate, authorize('admin'), async (req, res, next) => {
 router.patch('/:id', authenticate, authorize('admin'), async (req, res, next) => {
   try {
     const updates = { ...req.body };
+    const allowedFields = new Set(['email', 'fullName', 'role', 'isActive', 'password']);
+    if (Object.keys(updates).some((field) => !allowedFields.has(field))) {
+      throw AppError.badRequest('Unsupported user update field');
+    }
     if (updates.email) updates.email = updates.email.toLowerCase();
+    if (updates.role && !allowedRoles.includes(updates.role)) {
+      throw AppError.badRequest(`Role must be one of: ${allowedRoles.join(', ')}`);
+    }
+    if (updates.isActive !== undefined && typeof updates.isActive !== 'boolean') {
+      throw AppError.badRequest('Active status must be a boolean');
+    }
     if (updates.password) {
+      const passwordPolicy = await validatePassword(updates.password);
+      if (!passwordPolicy.valid) throw AppError.badRequest(passwordPolicy.errors.join(' '));
       updates.passwordHash = await bcrypt.hash(updates.password, 12);
       delete updates.password;
     }
@@ -98,7 +124,7 @@ router.patch('/:id', authenticate, authorize('admin'), async (req, res, next) =>
     const user = await userModel.update(req.params.id, updates);
     if (!user) throw AppError.notFound('User not found');
 
-    res.json({ success: true, data: user });
+    res.json({ success: true, data: safeUser(user) });
   } catch (err) {
     next(err);
   }

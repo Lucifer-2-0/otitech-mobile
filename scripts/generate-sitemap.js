@@ -68,6 +68,7 @@ async function main() {
 Allow: /
 
 Disallow: /admin/
+Disallow: /seller/
 Disallow: /api/
 Disallow: /backend/
 

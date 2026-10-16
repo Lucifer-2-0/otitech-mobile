@@ -2,7 +2,8 @@ import { pgTable, serial, varchar, text, integer, boolean, timestamp, decimal, p
 import { relations } from 'drizzle-orm';
 
 // Enums
-export const userRoleEnum = pgEnum('user_role', ['admin', 'staff', 'viewer']);
+export const userRoleEnum = pgEnum('user_role', ['admin', 'staff', 'viewer', 'moderator', 'seller']);
+export const propertyReviewStatusEnum = pgEnum('property_review_status', ['not_submitted', 'pending', 'approved', 'rejected']);
 export const propertyTypeEnum = pgEnum('property_type', ['land', 'house', 'apartment', 'commercial']);
 export const propertyPurposeEnum = pgEnum('property_purpose', ['sale', 'rent']);
 export const propertyStatusEnum = pgEnum('property_status', ['available', 'under_offer', 'sold', 'let']);
@@ -41,6 +42,10 @@ export const properties = pgTable('properties', {
   description: text('description'),
   features: text('features').array(),
   accent: varchar('accent', { length: 50 }),
+  sellerId: integer('seller_id').references(() => users.id, { onDelete: 'set null' }),
+  reviewStatus: propertyReviewStatusEnum('review_status').notNull().default('approved'),
+  reviewedAt: timestamp('reviewed_at'),
+  reviewedBy: integer('reviewed_by').references(() => users.id, { onDelete: 'set null' }),
   isPublished: boolean('is_published').notNull().default(false),
   publishedAt: timestamp('published_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -51,6 +56,7 @@ export const properties = pgTable('properties', {
   purposeIdx: index('properties_purpose_idx').on(table.purpose),
   statusIdx: index('properties_status_idx').on(table.status),
   publishedIdx: index('properties_published_idx').on(table.isPublished),
+  sellerIdIdx: index('properties_seller_id_idx').on(table.sellerId),
 }));
 
 // Property images table
@@ -137,9 +143,10 @@ export const siteSettings = pgTable('site_settings', {
 });
 
 // Relations
-export const propertiesRelations = relations(properties, ({ many }) => ({
+export const propertiesRelations = relations(properties, ({ many, one }) => ({
   images: many(propertyImages),
   enquiries: many(enquiries),
+  seller: one(users, { fields: [properties.sellerId], references: [users.id] }),
 }));
 
 export const propertyImagesRelations = relations(propertyImages, ({ one }) => ({
@@ -178,6 +185,7 @@ export const enquiriesRelations = relations(enquiries, ({ one }) => ({
 
 export const usersRelations = relations(users, ({ many }) => ({
   assignedEnquiries: many(enquiries),
+  sellerProperties: many(properties),
 }));
 
 export default {

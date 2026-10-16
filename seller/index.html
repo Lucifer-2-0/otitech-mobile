@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="description" content="Create an OTI-TECH seller account and submit property listings for review.">
+    <meta name="theme-color" content="#24104f">
+    <title>Seller Portal | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/seller.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <meta name="supabase-url" content="https://kmeqjvhscqjisososezt.supabase.co">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZXFqdmhzY3FqaXNvc29zZXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTUxNjYsImV4cCI6MjEwNjI3MTE2Nn0.YhU2V4Uly0f1bFITGAJU_Vm4Z0UKvSG7dVtoLULY6AQ">
+    <script>document.documentElement.classList.add('js-enabled');</script>
+</head>
+<body class="seller-page">
+    <a class="skip-link" href="#seller-main">Skip to main content</a>
+    <header class="seller-topbar">
+        <a class="seller-brand" href="../index.html">OTI-TECH</a>
+        <a href="../pages/properties.html">Browse properties</a>
+    </header>
+    <main id="seller-main" class="seller-auth-layout">
+        <section class="seller-intro">
+            <p class="seller-eyebrow">OTI-TECH SELLER PORTAL</p>
+            <h1>Bring your property to more buyers.</h1>
+            <p>Create a seller account, submit your listing, and track its review status. OTI-TECH checks each listing before it appears publicly.</p>
+            <ul>
+                <li>Your account manages your own property submissions.</li>
+                <li>Listings remain private while they are under review.</li>
+                <li>Buyer enquiries go to OTI-TECH or an assigned moderator.</li>
+            </ul>
+        </section>
+        <section class="seller-auth-card" aria-labelledby="seller-auth-title">
+            <div class="seller-auth-tabs" role="tablist" aria-label="Seller account options">
+                <button type="button" class="is-active" id="showSignIn" role="tab" aria-selected="true" aria-controls="signInPanel">Sign in</button>
+                <button type="button" id="showRegister" role="tab" aria-selected="false" aria-controls="registerPanel">Create account</button>
+            </div>
+            <div id="signInPanel" role="tabpanel" aria-labelledby="showSignIn">
+                <h2 id="seller-auth-title">Welcome back</h2>
+                <form id="sellerSignInForm" class="seller-form">
+                    <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" required></label>
+                    <label class="seller-field">Password<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="btn btn-primary" type="submit">Sign in</button>
+                </form>
+            </div>
+            <div id="registerPanel" role="tabpanel" aria-labelledby="showRegister" hidden>
+                <h2>Create your seller account</h2>
+                <form id="sellerRegisterForm" class="seller-form">
+                    <label class="seller-field">Full name<input name="fullName" autocomplete="name" maxlength="255" required></label>
+                    <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" maxlength="255" required></label>
+                    <label class="seller-field">Password<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+                    <small>Use at least 12 characters with uppercase and lowercase letters, a number, and a symbol.</small>
+                    <button class="btn btn-primary" type="submit">Create seller account</button>
+                </form>
+            </div>
+            <p id="sellerAuthStatus" class="seller-form-status" role="status" aria-live="polite"></p>
+            <p class="seller-auth-footnote">Submitting a property does not publish it. An OTI-TECH admin must approve it first.</p>
+        </section>
+    </main>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

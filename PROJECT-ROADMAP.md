@@ -37,6 +37,11 @@ otitech/
 │   ├── index.html
 │   ├── css/
 │   └── js/
+├── seller/                     # Seller registration and listing workspace
+│   ├── index.html
+│   ├── dashboard.html
+│   ├── css/
+│   └── js/
 ├── database/
 │   ├── schema.sql              # Reference schema
 │   └── README.md
@@ -67,7 +72,7 @@ otitech/
 | 4. Database & UI Polish | **Complete — 2026-09-23** | Enhanced all page hero sections with consistent design: gradient overlay, kicker badge, large responsive headlines, CTA button groups (primary + WhatsApp), arrow hover animations. Unified `.page-hero` base styles with responsive breakpoints. All 5 pages (Services, Properties, Projects, About, Contact) updated. Smoke tests pass. |
 | 5. Real Estate Functionality | **Complete — 2026-09-23** | API client (`js/api.js`) with endpoints for properties, projects, enquiries, auth, settings. Frontend modules (`properties.js`, `projects.js`) fetch from backend with graceful fallback to local sample data. Property/project detail pages fetch from API. Image gallery component (`components/image-gallery.js`) with thumbnail navigation, keyboard support. Responsive listing grid (1/2/3/4 columns). All 5 smoke tests pass. |
 | 6. Enquiries & Communication | **Complete — 2026-09-23** | Contact form submits to `/api/v1/enquiries` with DB persistence + email notification (Nodemailer). Graceful fallback to WhatsApp on API failure. WhatsApp business number centralized in `site_settings` table, fetched via public `/api/v1/settings/public` endpoint. Admin routes for enquiry management (list, get, update status/assignee/notes, delete). Contact form initiates API submission then opens WhatsApp as confirmation. All 5 smoke tests pass. |
-| 7. Admin Dashboard | **Implemented - pending desktop/mobile review** | Staff sign-in with access/refresh token renewal; admin-only account provisioning; admin/staff/viewer permissions; property and project create/edit/delete, draft/publish controls, optimized image upload, gallery ordering and cover selection; enquiry status/notes workflow; administrator site settings; dashboard totals. API requests protect draft data and elevated actions. |
+| 7. Admin Dashboard | **Implemented - pending desktop/mobile review** | Staff sign-in with access/refresh token renewal; admin-only account provisioning; admin/staff/viewer permissions; property and project create/edit/delete, draft/publish controls, image gallery management, enquiry status/notes, administrator site settings, dashboard totals, seller accounts and listing review, and moderator enquiry assignment. Seller submissions remain unpublished until an admin approves them. Sellers cannot access buyers or enquiries; moderators see only assigned enquiries; admins see the full inbox. Staff and viewer accounts have no enquiry access. |
 | 8. Production Readiness | **In progress** | Added a public-file-only frontend image, local Compose startup with automatic schema setup and health checks, same-origin API proxying, generated sitemap/robots metadata, and corrected image publishing permissions/tags plus Fly release migrations. Still pending: Phase 7 desktop/mobile review, production secrets and registry access, durable upload storage, backups, monitoring, and hosted acceptance checks. |
 
 ### Phase 2 acceptance criteria
@@ -78,15 +83,23 @@ otitech/
 - Projects and About have usable mobile and desktop layouts.
 - Every new page passes local reference checks and browser smoke/viewport testing before the backend phase starts.
 
-## Initial database entities
+## Current database entities
 
-- `users` — staff/admin accounts and roles.
-- `properties` — title, type, purpose, location, price, description, status.
+- `users` — admin, staff, viewer, moderator, and seller accounts.
+- `properties` — title, type, purpose, location, price, description, status, optional seller owner, and review status.
 - `property_images` — image URL, sort order, alt text, property relation.
 - `projects` — project title, category, description, cover image, status.
-- `enquiries` — contact details, requested service/property, message, status, timestamps.
+- `enquiries` — contact details, requested service/property, message, status, optional moderator assignment, and timestamps.
 - `site_settings` — phone, email, WhatsApp number, social links, company details.
 
 ## Working rule
 
 We will complete and verify one phase before moving to the next. Secrets will stay in environment variables, database changes will use migrations, and every user-facing feature will have a usable mobile and desktop state.
+
+## Seller workflow acceptance criteria
+
+- A seller can register, sign in, submit a property, upload listing photos, and see review status for their own submissions.
+- Seller-created listings and resubmissions remain unpublished until an admin approves them; approval publishes the listing and rejection leaves it private.
+- A seller cannot read or manage another seller's listings, access enquiries, or retrieve buyer contact details.
+- Admins can assign enquiries to active moderators. Moderators can read and update only enquiries assigned to them; staff and viewer accounts cannot access the enquiry API.
+- Existing approved listings stay public after migration, and existing unpublished listings remain private.

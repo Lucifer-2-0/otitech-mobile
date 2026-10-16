@@ -4,25 +4,28 @@ import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/summary', authenticate, authorize('admin', 'staff', 'viewer'), async (req, res, next) => {
+router.get('/summary', authenticate, authorize('admin', 'staff', 'viewer', 'moderator'), async (req, res, next) => {
   try {
-    const [properties, publishedProperties, projects, publishedProjects, enquiries, newEnquiries, activeEnquiries, users] = await Promise.all([
+    const canSeeEnquiries = ['admin', 'moderator'].includes(req.user.role);
+    const enquiryScope = req.user.role === 'moderator' ? { assignedTo: req.user.id } : {};
+    const [properties, publishedProperties, pendingReview, projects, publishedProjects, enquiries, newEnquiries, activeEnquiries, users] = await Promise.all([
       propertyModel.getAdminTotalCount(),
       propertyModel.getTotalCount(),
+      propertyModel.getAdminTotalCount({ reviewStatus: 'pending' }),
       projectModel.getAdminTotalCount(),
       projectModel.getTotalCount(),
-      enquiryModel.getTotalCount(),
-      enquiryModel.getTotalCount({ status: 'new' }),
-      enquiryModel.getTotalCount({ status: 'in_progress' }),
+      canSeeEnquiries ? enquiryModel.getTotalCount(enquiryScope) : 0,
+      canSeeEnquiries ? enquiryModel.getTotalCount({ ...enquiryScope, status: 'new' }) : 0,
+      canSeeEnquiries ? enquiryModel.getTotalCount({ ...enquiryScope, status: 'in_progress' }) : 0,
       userModel.count(),
     ]);
 
     res.json({
       success: true,
       data: {
-        properties: { total: properties, published: publishedProperties },
+        properties: { total: properties, published: publishedProperties, pendingReview },
         projects: { total: projects, published: publishedProjects },
-        enquiries: { total: enquiries, new: newEnquiries, inProgress: activeEnquiries },
+        ...(canSeeEnquiries ? { enquiries: { total: enquiries, new: newEnquiries, inProgress: activeEnquiries } } : {}),
         users: { total: users },
       },
     });

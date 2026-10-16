@@ -49,9 +49,18 @@ router.post('/', contactFormRateLimiter, validate(createEnquirySchema), async (r
   }
 });
 
-router.get('/', authenticate, authorize('admin', 'staff', 'viewer'), validateQuery(enquiryQuerySchema), async (req, res, next) => {
+router.get('/assignees', authenticate, authorize('admin'), async (req, res, next) => {
   try {
-    const { status, service, assignedTo, page, limit } = req.validatedQuery;
+    res.json({ success: true, data: await userModel.findEnquiryAssignees() });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/', authenticate, authorize('admin', 'moderator'), validateQuery(enquiryQuerySchema), async (req, res, next) => {
+  try {
+    const { status, service, page, limit } = req.validatedQuery;
+    const assignedTo = req.user.role === 'moderator' ? req.user.id : req.validatedQuery.assignedTo;
     const offset = (page - 1) * limit;
 
     const [enquiries, total] = await Promise.all([
@@ -74,7 +83,7 @@ router.get('/', authenticate, authorize('admin', 'staff', 'viewer'), validateQue
   }
 });
 
-router.get('/:id', authenticate, authorize('admin', 'staff', 'viewer'), validateParams(enquiryParamsSchema), async (req, res, next) => {
+router.get('/:id', authenticate, authorize('admin', 'moderator'), validateParams(enquiryParamsSchema), async (req, res, next) => {
   try {
     const enquiry = await enquiryModel.findById(req.validatedParams.id);
 
@@ -83,6 +92,9 @@ router.get('/:id', authenticate, authorize('admin', 'staff', 'viewer'), validate
         success: false,
         error: { code: 'NOT_FOUND', message: 'Enquiry not found' },
       });
+    }
+    if (req.user.role === 'moderator' && enquiry.assignedTo !== req.user.id) {
+      return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Enquiry not found' } });
     }
 
     res.json({ success: true, data: enquiry });
@@ -97,8 +109,21 @@ const updateEnquirySchema = z.object({
   notes: z.string().optional(),
 });
 
-router.patch('/:id', authenticate, authorize('admin', 'staff'), validateParams(enquiryParamsSchema), validate(updateEnquirySchema), async (req, res, next) => {
+router.patch('/:id', authenticate, authorize('admin', 'moderator'), validateParams(enquiryParamsSchema), validate(updateEnquirySchema), async (req, res, next) => {
   try {
+    const existing = await enquiryModel.findById(req.validatedParams.id);
+    if (!existing || (req.user.role === 'moderator' && existing.assignedTo !== req.user.id)) {
+      return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Enquiry not found' } });
+    }
+    if (req.user.role !== 'admin' && req.validatedBody.assignedTo !== undefined) {
+      return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'Only admins can assign enquiries.' } });
+    }
+    if (req.user.role === 'admin' && req.validatedBody.assignedTo !== undefined && req.validatedBody.assignedTo !== null) {
+      const assignee = await userModel.findById(req.validatedBody.assignedTo);
+      if (!assignee || !assignee.isActive || assignee.role !== 'moderator') {
+        return res.status(422).json({ success: false, error: { code: 'INVALID_ASSIGNEE', message: 'Choose an active moderator.' } });
+      }
+    }
     const enquiry = await enquiryModel.update(req.validatedParams.id, req.validatedBody);
 
     if (!enquiry) {

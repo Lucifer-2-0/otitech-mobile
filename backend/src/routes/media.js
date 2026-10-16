@@ -23,13 +23,16 @@ const imageMetadataSchema = z.object({
   isCover: z.boolean().optional().default(false),
 });
 
-router.post('/presigned-upload', authenticate, authorize('admin', 'staff'), validate(presignedSchema), async (req, res, next) => {
+router.post('/presigned-upload', authenticate, authorize('admin', 'staff', 'seller'), validate(presignedSchema), async (req, res, next) => {
   try {
     if (!isS3Configured()) {
       throw AppError.badRequest('S3 storage not configured. Set STORAGE_PROVIDER=s3 and provide AWS credentials.');
     }
 
     const { prefix, fileName, contentType, expiresIn = 3600 } = req.validatedBody;
+    if (req.user.role === 'seller' && prefix !== 'properties') {
+      throw AppError.forbidden('Seller accounts can only upload property images.');
+    }
     const result = await getPresignedUploadUrl({ prefix, fileName, contentType, expiresIn });
 
     res.json({
@@ -50,7 +53,7 @@ router.post('/presigned-upload', authenticate, authorize('admin', 'staff'), vali
   }
 });
 
-router.get('/storage/status', authenticate, authorize('admin', 'staff', 'viewer'), async (req, res, next) => {
+router.get('/storage/status', authenticate, authorize('admin', 'staff', 'viewer', 'seller'), async (req, res, next) => {
   try {
     res.json({
       success: true,
@@ -117,10 +120,26 @@ export const removeStoredImages = async (kind, id, imageId) => {
 
 export const createImageRoutes = (kind) => {
   const imageRouter = Router({ mergeParams: true });
+
+  const assertSellerOwnsProperty = async (req, forWrite = false) => {
+    if (req.user.role !== 'seller') return;
+    if (kind !== 'property') throw AppError.forbidden('Seller accounts can only manage their own property images.');
+    const [property] = await getDb().select({
+      sellerId: schema.properties.sellerId,
+      isPublished: schema.properties.isPublished,
+      reviewStatus: schema.properties.reviewStatus,
+    })
+      .from(schema.properties).where(eq(schema.properties.id, Number(req.params.id))).limit(1);
+    if (!property || property.sellerId !== req.user.id) throw AppError.notFound('Property not found');
+    if (forWrite && property.reviewStatus === 'approved' && property.isPublished) {
+      throw AppError.conflict('Contact OTI-TECH to change images on a published listing.');
+    }
+  };
   
   // GET images for a record
-  imageRouter.get('/', authenticate, authorize('admin', 'staff', 'viewer'), async (req, res, next) => {
+  imageRouter.get('/', authenticate, authorize('admin', 'staff', 'viewer', 'seller'), async (req, res, next) => {
     try {
+      await assertSellerOwnsProperty(req);
       const images = await findStoredImages(kind, req.params.id);
       res.json({ success: true, data: images });
     } catch (err) {
@@ -129,8 +148,9 @@ export const createImageRoutes = (kind) => {
   });
   
   // POST upload image
-  imageRouter.post('/', authenticate, authorize('admin', 'staff'), validateParams(z.object({ id: z.coerce.number().int().positive() })), validate(imageMetadataSchema), async (req, res, next) => {
+  imageRouter.post('/', authenticate, authorize('admin', 'staff', 'seller'), validateParams(z.object({ id: z.coerce.number().int().positive() })), validate(imageMetadataSchema), async (req, res, next) => {
     try {
+      await assertSellerOwnsProperty(req, true);
       const db = getDb();
       const parentId = req.validatedParams.id;
       const table = kind === 'property' ? schema.propertyImages : schema.projectImages;
@@ -159,8 +179,9 @@ export const createImageRoutes = (kind) => {
   });
   
   // PATCH update image (alt text, order, cover)
-  imageRouter.patch('/:imageId', authenticate, authorize('admin', 'staff'), async (req, res, next) => {
+  imageRouter.patch('/:imageId', authenticate, authorize('admin', 'staff', 'seller'), async (req, res, next) => {
     try {
+      await assertSellerOwnsProperty(req, true);
       const { altText, sortOrder, isCover } = req.body;
       const table = kind === 'property' ? schema.propertyImages : schema.projectImages;
       const idField = kind === 'property' ? schema.propertyImages.id : schema.projectImages.id;
@@ -202,8 +223,9 @@ export const createImageRoutes = (kind) => {
   });
   
   // DELETE image
-  imageRouter.delete('/:imageId', authenticate, authorize('admin', 'staff'), async (req, res, next) => {
+  imageRouter.delete('/:imageId', authenticate, authorize('admin', 'staff', 'seller'), async (req, res, next) => {
     try {
+      await assertSellerOwnsProperty(req, true);
       await removeStoredImages(kind, req.params.id, req.params.imageId);
       res.json({ success: true, message: 'Image removed' });
     } catch (err) {
@@ -214,7 +236,7 @@ export const createImageRoutes = (kind) => {
   return imageRouter;
 };
 
-router.get('/storage/status', authenticate, authorize('admin', 'staff', 'viewer'), async (req, res, next) => {
+router.get('/storage/status', authenticate, authorize('admin', 'staff', 'viewer', 'seller'), async (req, res, next) => {
   try {
     res.json({
       success: true,
