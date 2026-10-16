@@ -1,8 +1,8 @@
 import { ZodError } from 'zod';
 
-export const validate = (schema) => (req, res, next) => {
+export const validate = (schema) => async (req, res, next) => {
   try {
-    const result = schema.safeParse(req.body);
+    const result = await schema.safeParseAsync(req.body);
     if (!result.success) {
       const errors = result.error.errors.map(e => ({
         field: e.path.join('.'),
