@@ -71,16 +71,16 @@ test('property search prepares a contact enquiry instead of claiming live invent
     console.log('Console messages:', consoleMessages.join(' | '));
     console.log('Network requests:', networkRequests.join(' | '));
 
-    // Wait for initial render - should show all 5 properties
-    await expect(page.locator('#properties-grid .listing-card')).toHaveCount(5, { timeout: 10000 });
+    // The current illustrative catalog contains nine properties.
+    await expect(page.locator('#properties-grid .listing-card')).toHaveCount(9, { timeout: 10000 });
 
     await page.locator('#filter-type').selectOption('land');
     await page.locator('#filter-purpose').selectOption('sale');
     await page.locator('#filter-location').fill('Ikeja');
     await page.locator('#properties-filter button[type="submit"]').click();
 
-    // One property matches: Ikeja GRA residential plot
-    await expect(page.locator('#properties-grid .listing-card')).toHaveCount(1, { timeout: 10000 });
+    // Two illustrative land-for-sale listings match Ikeja.
+    await expect(page.locator('#properties-grid .listing-card')).toHaveCount(2, { timeout: 10000 });
     await expect(page.locator('#properties-status')).toContainText('Showing', { timeout: 5000 });
     expect(pageErrors).toEqual([]);
 });
@@ -104,19 +104,15 @@ test('the contact form creates a WhatsApp handoff without a site submission', as
     await page.locator('#contact-message').fill('I would like to discuss a residential construction project.');
     await page.locator('#contactForm button[type="submit"]').click();
 
-    // Wait for either API success or fallback to WhatsApp
-    await page.waitForTimeout(2000);
-    
-    // Check if WhatsApp URL was opened (either via API success + timeout or fallback)
+    // Wait for the API attempt and its WhatsApp fallback to complete.
+    await expect(page.locator('#contact-form-status')).toContainText(/Enquiry saved|We could not save your enquiry/, { timeout: 10000 });
+    await expect.poll(() => page.evaluate(() => window.__otitechOpenedUrl), { timeout: 10000 }).toBeTruthy();
+
     const openedUrl = await page.evaluate(() => window.__otitechOpenedUrl);
     if (openedUrl) {
         expect(openedUrl).toContain('https://wa.me/2349017017156?text=');
         expect(decodeURIComponent(openedUrl)).toContain('Ada Okafor');
         expect(decodeURIComponent(openedUrl)).toContain('Building Construction');
-    } else {
-        // If no WhatsApp URL opened, check that form submission at least attempted
-        const statusText = await page.locator('#contact-form-status').textContent();
-        expect(statusText).toBeTruthy();
     }
     expect(pageErrors).toEqual([]);
 });
