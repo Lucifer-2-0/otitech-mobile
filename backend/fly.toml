@@ -1,0 +1,41 @@
+app = "otitech-api-prod"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  API_PREFIX = "/api/v1"
+  PORT = "3000"
+  LOG_LEVEL = "info"
+  CORS_ORIGIN = "https://otitech-frontend.vercel.app,https://otitech-frontend.vercel.app"
+
+[deploy]
+  release_command = "node src/migrate.js"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
+
+[metrics]
+  port = 3000
+  path = "/metrics"
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  path = "/api/v1/health/ready"
+  timeout = "5s"
+
+[experimental]
+  auto_rollback = true

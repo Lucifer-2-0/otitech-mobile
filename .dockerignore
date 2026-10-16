@@ -1,0 +1,18 @@
+# Never send credentials or local configuration to a Docker build.
+.env
+.env.*
+backend/.env
+backend/.env.*
+
+# Local dependencies, generated output, tests, and user data are not build inputs.
+node_modules/
+backend/node_modules/
+uploads/
+test-results/
+coverage/
+.git/
+.history/
+.kilo/
+*.log
+*.sqlite
+*.db

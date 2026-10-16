@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Browse OTI-TECH property listings with advanced search and filtering. Find land, houses, apartments and commercial properties for sale or rent.">
+    <meta name="theme-color" content="#24104f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Properties | OTI-TECH">
+    <meta property="og:description" content="Explore OTI-TECH property listings. Filter by type, purpose, status, location and price.">
+    <title>Properties | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        import { footerHTML } from '../components/footer.js';
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        import { breadcrumbJsonLd, renderJsonLd } from '../components/json-ld.js';
+        document.documentElement.classList.add('js-enabled');
+        document.write(renderJsonLd(breadcrumbJsonLd([
+          { name: 'Home', url: 'https://otitech.com/' },
+          { name: 'Properties', url: 'https://otitech.com/pages/properties.html' }
+        ])));
+    </script>
+</head>
+
+<body data-page="properties">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="navigation-placeholder">
+        <noscript>
+            <header class="nav">
+                <div class="wrap navin">
+                    <a class="logo" href="../index.html" aria-label="OTI-TECH Home"><span class="logo-text">OTI-TECH</span></a>
+                    <nav id="main-nav" aria-label="Main navigation">
+                        <a href="../index.html">Home</a>
+                        <a href="pages/services.html">Services</a>
+                        <a href="pages/properties.html">Properties</a>
+                        <a href="pages/projects.html">Projects</a>
+                        <a href="pages/about.html">About</a>
+                        <a href="pages/contact.html">Contact</a>
+                        <a href="../index.html#contact" class="nav-cta">Get a Quote</a>
+                    </nav>
+                </div>
+            </header>
+        </noscript>
+    </div>
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        document.getElementById('navigation-placeholder').innerHTML = navigationHTML('properties', '../');
+        initNavigation();
+    </script>
+
+    <main id="main-content" tabindex="-1">
+        <section class="page-hero page-hero--properties" aria-labelledby="page-title">
+            <div class="wrap page-hero-content">
+                <p class="eyebrow">Property Listings</p>
+                <h1 id="page-title">Find the right <span>property.</span></h1>
+                <p>Browse our current listings. All properties are illustrative samples until live inventory is connected.</p>
+                <div class="page-hero-actions">
+                    <a class="btn btn-primary" href="#listing-title">Browse Listings <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a class="btn btn-whatsapp" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20make%20a%20property%20enquiry." target="_blank" rel="noopener noreferrer">Enquire on WhatsApp <span class="btn-arrow" aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="listing-section" aria-labelledby="listing-title">
+            <div class="wrap">
+                <div class="listing-heading">
+                    <div>
+                        <p class="eyebrow">Browse listings</p>
+                        <h2 id="listing-title">Explore available properties.</h2>
+                    </div>
+                    <p class="page-disclaimer" role="note"><strong>Important:</strong> These are illustrative sample listings for planning and browsing only. They are not live property inventory.</p>
+                </div>
+
+                <form class="listing-filter listing-filter--advanced" id="properties-filter" role="search" aria-describedby="properties-status">
+                    <div class="filter-row">
+                        <div class="filter-field">
+                            <label for="filter-type">Property Type</label>
+                            <select id="filter-type" name="type">
+                                <option value="">All Types</option>
+                                <option value="land">Land</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="commercial">Commercial</option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-purpose">Purpose</label>
+                            <select id="filter-purpose" name="purpose">
+                                <option value="">Buy or Rent</option>
+                                <option value="sale">For Sale</option>
+                                <option value="rent">For Rent</option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-status">Status</label>
+                            <select id="filter-status" name="status">
+                                <option value="">All Statuses</option>
+                                <option value="available">Available</option>
+                                <option value="under_offer">Under Offer</option>
+                                <option value="sold">Sold / Let</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-field filter-field--wide">
+                            <label for="filter-location">Location</label>
+                            <input id="filter-location" name="location" type="search" placeholder="e.g. Ikeja, Lekki, Abuja..." autocomplete="address-level2">
+                        </div>
+                    </div>
+                    <div class="filter-row filter-row--price">
+                        <div class="filter-field">
+                            <label for="filter-min-price">Min Price (₦)</label>
+                            <input id="filter-min-price" name="min_price" type="text" placeholder="e.g. 50,000,000" inputmode="numeric" autocomplete="off">
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-max-price">Max Price (₦)</label>
+                            <input id="filter-max-price" name="max_price" type="text" placeholder="e.g. 500,000,000" inputmode="numeric" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="filter-submit" type="submit">Apply Filters <span aria-hidden="true">→</span></button>
+                        <button class="filter-reset" type="reset">Clear All</button>
+                    </div>
+                </form>
+
+                <div class="listing-results-header">
+                    <p class="listing-status" id="properties-status" role="status" aria-live="polite"></p>
+                    <p class="listing-count" id="properties-count" aria-live="polite"></p>
+                </div>
+                <div class="listing-grid" id="properties-grid" aria-live="polite"></div>
+
+                <noscript>
+                    <p class="no-script-message">Interactive filtering needs JavaScript. For a tailored property brief, <a href="https://wa.me/2349017017156" target="_blank" rel="noopener noreferrer">chat with OTI-TECH on WhatsApp</a>.</p>
+                </noscript>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module">
+        import { footerHTML } from '../components/footer.js';
+        document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    </script>
+
+    <div id="whatsapp-placeholder"></div>
+    <script type="module">
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.getElementById('whatsapp-placeholder').innerHTML = whatsAppButtonHTML('Hello OTI-TECH, I would like to make a property enquiry.');
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/properties.js"></script>
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="OTI-TECH Admin Dashboard - Manage properties, projects and enquiries.">
+    <meta name="theme-color" content="#24104f">
+    <title>Dashboard | OTI-TECH Admin</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script>document.documentElement.classList.add('js-enabled');</script>
+    <meta name="supabase-url" content="https://kmeqjvhscqjisososezt.supabase.co">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZXFqdmhzY3FqaXNvc29zZXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTUxNjYsImV4cCI6MjEwNjI3MTE2Nn0.YhU2V4Uly0f1bFITGAJU_Vm4Z0UKvSG7dVtoLULY6AQ">
+    <script type="module" src="../js/supabase.js"></script>
+</head>
+<body data-page="admin-dashboard">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Admin navigation">
+        <div class="admin-sidebar-header">
+                    <a href="#dashboard" class="admin-logo-link" aria-label="OTI-TECH Admin Home">
+                <svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true">
+                    <rect width="32" height="32" rx="8" fill="#24104f"/>
+                    <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="900" fill="#fff">OT</text>
+                </svg>
+                <span class="admin-logo-text">OTI-TECH Admin</span>
+            </a>
+            <button class="admin-sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="adminSidebarNav">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+        </div>
+
+        <nav id="adminSidebarNav" class="admin-sidebar-nav" aria-label="Main admin navigation">
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="#dashboard" class="admin-nav-link" data-section="dashboard">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="#properties" class="admin-nav-link" data-section="properties">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Properties</span>
+                        <span class="admin-nav-badge" id="propertiesCount">0</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="#projects" class="admin-nav-link" data-section="projects">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        <span>Projects</span>
+                        <span class="admin-nav-badge" id="projectsCount">0</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="#enquiries" class="admin-nav-link" data-section="enquiries">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>Enquiries</span>
+                        <span class="admin-nav-badge admin-nav-badge--urgent" id="enquiriesCount">0</span>
+                    </a>
+                </li>
+<li class="admin-nav-item">
+                    <a href="#settings" class="admin-nav-link" data-section="settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="#users" class="admin-nav-link" data-section="users">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>Users</span>
+                        <span class="admin-nav-badge" id="usersCount">0</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="admin-nav-footer">
+                <div class="admin-user-info">
+                    <div class="admin-user-avatar" id="adminUserAvatar">AD</div>
+                    <div class="admin-user-details">
+                        <span class="admin-user-name" id="adminUserName">Admin User</span>
+                        <span class="admin-user-role" id="adminUserRole">Administrator</span>
+                    </div>
+                </div>
+                <button class="admin-nav-link admin-logout-btn" id="logoutBtn" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="admin-main">
+        <header class="admin-header">
+            <button class="admin-mobile-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="adminSidebar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <h1 class="admin-page-title" id="adminPageTitle">Dashboard</h1>
+            <div class="admin-header-actions">
+                <a href="../index.html" class="btn btn-secondary" target="_blank">View Site</a>
+            </div>
+        </header>
+
+        <main id="main-content" class="admin-content" tabindex="-1">
+            <!-- Page content injected here -->
+        </main>
+    </div>
+
+    <div class="admin-overlay" id="adminOverlay" aria-hidden="true"></div>
+
+    <script src="../js/vendor/papaparse.min.js"></script>
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="View OTI-TECH's portfolio of residential, commercial, mixed-use and renovation projects across Nigeria.">
+    <meta name="theme-color" content="#24104f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Our Projects | OTI-TECH">
+    <meta property="og:description" content="Explore OTI-TECH's completed and ongoing projects in design, construction and project support.">
+    <title>Our Projects | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        import { footerHTML } from '../components/footer.js';
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        import { breadcrumbJsonLd, renderJsonLd } from '../components/json-ld.js';
+        document.documentElement.classList.add('js-enabled');
+        document.write(renderJsonLd(breadcrumbJsonLd([
+          { name: 'Home', url: 'https://otitech.com/' },
+          { name: 'Projects', url: 'https://otitech.com/pages/projects.html' }
+        ])));
+    </script>
+</head>
+
+<body data-page="projects">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="navigation-placeholder">
+        <noscript>
+            <header class="nav">
+                <div class="wrap navin">
+                    <a class="logo" href="../index.html" aria-label="OTI-TECH Home"><span class="logo-text">OTI-TECH</span></a>
+                    <nav id="main-nav" aria-label="Main navigation">
+                        <a href="../index.html">Home</a>
+                        <a href="pages/services.html">Services</a>
+                        <a href="pages/properties.html">Properties</a>
+                        <a href="pages/projects.html">Projects</a>
+                        <a href="pages/about.html">About</a>
+                        <a href="pages/contact.html">Contact</a>
+                        <a href="../index.html#contact" class="nav-cta">Get a Quote</a>
+                    </nav>
+                </div>
+            </header>
+        </noscript>
+    </div>
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        document.getElementById('navigation-placeholder').innerHTML = navigationHTML('projects', '../');
+        initNavigation();
+    </script>
+
+    <main id="main-content" tabindex="-1">
+        <section class="page-hero page-hero--projects" aria-labelledby="page-title">
+            <div class="wrap page-hero-content">
+                <p class="eyebrow">Project Portfolio</p>
+                <h1 id="page-title">Spaces we've helped <span>bring to life.</span></h1>
+                <p>Explore selected residential, commercial, mixed-use and renovation projects representing the work OTI-TECH delivers.</p>
+                <div class="page-hero-actions">
+                    <a class="btn btn-primary" href="#filter-title">View Projects <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a class="btn btn-whatsapp" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Discuss Project <span class="btn-arrow" aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-filter-section" aria-labelledby="filter-title">
+            <div class="wrap">
+                <form class="listing-filter listing-filter--projects" id="projects-filter" role="search" aria-describedby="projects-status">
+                    <div class="filter-row">
+                        <div class="filter-field">
+                            <label for="filter-category">Category</label>
+                            <select id="filter-category" name="category">
+                                <option value="">All Categories</option>
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="mixed_use">Mixed Use</option>
+                                <option value="renovation">Renovation</option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-status">Status</label>
+                            <select id="filter-status" name="status">
+                                <option value="">All Statuses</option>
+                                <option value="completed">Completed</option>
+                                <option value="ongoing">Ongoing</option>
+                                <option value="planning">Planning</option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-year">Year</label>
+                            <select id="filter-year" name="year">
+                                <option value="">All Years</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-field filter-field--wide">
+                            <label for="filter-location">Location</label>
+                            <input id="filter-location" name="location" type="search" placeholder="e.g. Lagos, Abuja, Ibadan..." autocomplete="address-level2">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="filter-submit" type="submit">Filter Projects <span aria-hidden="true">→</span></button>
+                        <button class="filter-reset" type="reset">Clear All</button>
+                    </div>
+                </form>
+
+                <div class="listing-results-header">
+                    <p class="listing-status" id="projects-status" role="status" aria-live="polite"></p>
+                    <p class="listing-count" id="projects-count" aria-live="polite"></p>
+                </div>
+                <div class="listing-grid" id="projects-grid" aria-live="polite"></div>
+
+                <noscript>
+                    <p class="no-script-message">Interactive filtering needs JavaScript. Our portfolio is being prepared with client approval. <a href="https://wa.me/2349017017156" target="_blank" rel="noopener noreferrer">Chat with OTI-TECH on WhatsApp</a> to learn more.</p>
+                </noscript>
+            </div>
+        </section>
+
+        <section class="page-cta-section">
+            <div class="wrap page-cta">
+                <p class="eyebrow">Have a project in mind?</p>
+                <h2>Let's discuss what you're building.</h2>
+                <p>Whether it's a home, commercial space, or renovation, we're ready to help you plan the next step.</p>
+                <a class="btn page-cta-button" href="../index.html#contact">Start a Conversation <span aria-hidden="true">→</span></a>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module">
+        import { footerHTML } from '../components/footer.js';
+        document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    </script>
+
+    <div id="whatsapp-placeholder"></div>
+    <script type="module">
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.getElementById('whatsapp-placeholder').innerHTML = whatsAppButtonHTML('Hello OTI-TECH, I would like to discuss a project.');
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/projects.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Review an illustrative OTI-TECH property listing and start an enquiry.">
+    <meta name="theme-color" content="#24104f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Property Details | OTI-TECH">
+    <meta property="og:description" content="Review an illustrative OTI-TECH property listing and start an enquiry.">
+    <title>Property Details | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        import { footerHTML } from '../components/footer.js';
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        import { breadcrumbJsonLd, realEstateListingJsonLd, renderJsonLd } from '../components/json-ld.js';
+        import { sampleProperties, normalizeProperty } from '../components/property-card.js';
+        document.documentElement.classList.add('js-enabled');
+
+        // Add breadcrumb and property JSON-LD
+        const searchParams = new URLSearchParams(window.location.search);
+        const slug = searchParams.get('slug');
+        const property = sampleProperties.find(p => p.slug === slug) || sampleProperties[0];
+        const normalized = normalizeProperty(property);
+        document.write(renderJsonLd(breadcrumbJsonLd([
+          { name: 'Home', url: 'https://otitech.com/' },
+          { name: 'Properties', url: 'https://otitech.com/pages/properties.html' },
+          { name: normalized.title, url: `https://otitech.com/pages/property-details.html?slug=${normalized.slug}` }
+        ])));
+        document.write(renderJsonLd(realEstateListingJsonLd(normalized)));
+    </script>
+</head>
+
+<body data-page="properties">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="navigation-placeholder">
+        <noscript>
+            <header class="nav">
+                <div class="wrap navin">
+                    <a class="logo" href="../index.html" aria-label="OTI-TECH Home"><span class="logo-text">OTI-TECH</span></a>
+                    <nav id="main-nav" aria-label="Main navigation">
+                        <a href="../index.html">Home</a>
+                        <a href="pages/services.html">Services</a>
+                        <a href="pages/properties.html">Properties</a>
+                        <a href="pages/projects.html">Projects</a>
+                        <a href="pages/about.html">About</a>
+                        <a href="pages/contact.html">Contact</a>
+                        <a href="../index.html#contact" class="nav-cta">Get a Quote</a>
+                    </nav>
+                </div>
+            </header>
+        </noscript>
+    </div>
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        document.getElementById('navigation-placeholder').innerHTML = navigationHTML('properties', '../');
+        initNavigation();
+    </script>
+
+    <main id="main-content" tabindex="-1">
+        <section class="detail-section">
+            <div class="wrap">
+                <a class="back-link" href="properties.html">← Back to Properties</a>
+                <div id="property-detail" class="property-detail property-detail--enhanced" aria-live="polite"></div>
+                <noscript>
+                    <p class="no-script-message">Property details are interactive sample content. Please <a href="https://wa.me/2349017017156" target="_blank" rel="noopener noreferrer">chat with OTI-TECH on WhatsApp</a> to discuss your property needs.</p>
+                </noscript>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module">
+        import { footerHTML } from '../components/footer.js';
+        document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    </script>
+
+    <div id="whatsapp-placeholder"></div>
+    <script type="module">
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.getElementById('whatsapp-placeholder').innerHTML = whatsAppButtonHTML('Hello OTI-TECH, I would like to make a property enquiry.');
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/properties.js"></script>
+</body>
+
+</html>

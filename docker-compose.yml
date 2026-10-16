@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: otitech-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: otitech
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d otitech"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - otitech-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: otitech-api
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      API_PREFIX: /api/v1
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/otitech
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: otitech
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      CORS_ORIGIN: http://localhost:4173
+      LOG_LEVEL: debug
+      # SMTP and WhatsApp settings come from backend/.env.
+      # File upload
+      UPLOAD_DIR: /app/uploads
+      MAX_FILE_SIZE: 5242880
+      # Rate limiting
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 100
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./backend/src:/app/src:ro
+      - ./uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - otitech-network
+    # Override command for development with hot reload
+    command: ["sh", "-c", "node src/migrate.js && exec node --watch src/server.js"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        SITE_URL: ${SITE_URL:-https://otitech.com}
+    container_name: otitech-web
+    environment:
+      API_UPSTREAM: backend:3000
+    ports:
+      - "127.0.0.1:4173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - otitech-network
+
+volumes:
+  postgres_data:
+
+networks:
+  otitech-network:
+    driver: bridge

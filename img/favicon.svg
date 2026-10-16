@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OTI-TECH">
+  <rect width="64" height="64" rx="12" fill="#24104f"/>
+  <path d="M10 31 32 12l22 19v22H10V31Z" fill="#4b2398"/>
+  <path d="M18 31h28v22H18V31Zm8 7v15h12V38H26Z" fill="#fff"/>
+  <path d="M8 31 32 9l24 22-4 4-20-18L12 35l-4-4Z" fill="#fff"/>
+</svg>

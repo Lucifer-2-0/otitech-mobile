@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="OTI-TECH Admin Dashboard - Sign in to manage properties, projects and enquiries.">
+    <meta name="theme-color" content="#24104f">
+    <title>Sign In | OTI-TECH Admin</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script>document.documentElement.classList.add('js-enabled');</script>
+    <meta name="supabase-url" content="https://kmeqjvhscqjisososezt.supabase.co">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZXFqdmhzY3FqaXNvc29zZXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTUxNjYsImV4cCI6MjEwNjI3MTE2Nn0.YhU2V4Uly0f1bFITGAJU_Vm4Z0UKvSG7dVtoLULY6AQ">
+    <script type="module" src="../js/supabase.js"></script>
+</head>
+<body data-page="admin-login">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <main id="main-content" tabindex="-1">
+        <section class="admin-login-section" aria-labelledby="login-title">
+            <div class="admin-login-container">
+                <div class="admin-login-brand">
+                    <svg class="admin-logo" viewBox="0 0 32 32" width="48" height="48" aria-hidden="true">
+                        <rect width="32" height="32" rx="8" fill="#24104f"/>
+                        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="900" fill="#fff">OT</text>
+                    </svg>
+                    <h1 id="login-title">OTI-TECH Admin</h1>
+                    <p>Sign in to manage your dashboard</p>
+                </div>
+
+                <form class="admin-login-form" id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required placeholder="admin@otitech.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
+                    </div>
+
+                    <button type="submit" class="btn admin-login-submit">Sign In <span aria-hidden="true">&rarr;</span></button>
+
+                    <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
+                </form>
+
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>

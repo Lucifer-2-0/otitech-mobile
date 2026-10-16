@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Explore OTI-TECH's building design, construction, real estate and project support services.">
+    <meta name="theme-color" content="#24104f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Our Services | OTI-TECH">
+    <meta property="og:description" content="Building design, construction, real estate and project support services from OTI-TECH.">
+    <title>Our Services | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        import { footerHTML } from '../components/footer.js';
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.documentElement.classList.add('js-enabled');
+    </script>
+</head>
+
+<body data-page="services">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="navigation-placeholder">
+        <noscript>
+            <header class="nav">
+                <div class="wrap navin">
+                    <a class="logo" href="../index.html" aria-label="OTI-TECH Home"><span class="logo-text">OTI-TECH</span></a>
+                    <nav id="main-nav" aria-label="Main navigation">
+                        <a href="../index.html">Home</a>
+                        <a href="pages/services.html">Services</a>
+                        <a href="pages/properties.html">Properties</a>
+                        <a href="pages/projects.html">Projects</a>
+                        <a href="pages/about.html">About</a>
+                        <a href="pages/contact.html">Contact</a>
+                        <a href="../index.html#contact" class="nav-cta">Get a Quote</a>
+                    </nav>
+                </div>
+            </header>
+        </noscript>
+    </div>
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        document.getElementById('navigation-placeholder').innerHTML = navigationHTML('services', '../');
+        initNavigation();
+    </script>
+
+    <main id="main-content" tabindex="-1">
+        <section class="page-hero page-hero--services" aria-labelledby="page-title">
+            <div class="wrap page-hero-content">
+                <p class="eyebrow">Our Services</p>
+                <h1 id="page-title">Practical solutions for <span>every stage.</span></h1>
+                <p>From the first sketch to the finished property, OTI-TECH brings design, construction and real estate expertise under one roof.</p>
+                <div class="page-hero-actions">
+                    <a class="btn btn-primary" href="#building-design">Explore Services <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a class="btn btn-whatsapp" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20discuss%20your%20services." target="_blank" rel="noopener noreferrer">Chat on WhatsApp <span class="btn-arrow" aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-overview" aria-labelledby="services-overview-title">
+            <div class="wrap">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">What we do</p>
+                        <h2 id="services-overview-title">Four connected disciplines, one focused team.</h2>
+                    </div>
+                    <p>Each service stands on its own, but they work best together. That is how we help clients move faster, with fewer handoffs and clearer accountability.</p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card service-card--design">
+                        <div class="service-card-visual" aria-hidden="true">
+                            <span class="service-icon">📐</span>
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Building Design</h3>
+                            <p>Thoughtful residential and commercial concepts developed around your needs, site context and budget.</p>
+                            <ul class="service-features">
+                                <li>Residential & commercial designs</li>
+                                <li>Floor plans & architectural drawings</li>
+                                <li>3D concepts & visual presentations</li>
+                                <li>Planning & regulatory guidance</li>
+                            </ul>
+                            <a class="btn service-card-btn" href="#building-design">Explore Building Design <span aria-hidden="true">→</span></a>
+                        </div>
+                    </article>
+
+                    <article class="service-card service-card--construction">
+                        <div class="service-card-visual" aria-hidden="true">
+                            <span class="service-icon">🏗️</span>
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Building Construction</h3>
+                            <p>Practical project execution with attention to quality, detail and delivery—from groundwork to handover.</p>
+                            <ul class="service-features">
+                                <li>Project execution & site management</li>
+                                <li>Quality control & workmanship</li>
+                                <li>Cost control & scheduling</li>
+                                <li>Renovation & refurbishment</li>
+                            </ul>
+                            <a class="btn service-card-btn" href="#building-construction">Explore Construction <span aria-hidden="true">→</span></a>
+                        </div>
+                    </article>
+
+                    <article class="service-card service-card--realestate">
+                        <div class="service-card-visual" aria-hidden="true">
+                            <span class="service-icon">🏘️</span>
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Real Estate</h3>
+                            <p>Explore land, homes, apartments and commercial opportunities with practical guidance at every step.</p>
+                            <ul class="service-features">
+                                <li>Property search & acquisition support</li>
+                                <li>Sales & leasing representation</li>
+                                <li>Market analysis & due diligence</li>
+                                <li>Investment advisory</li>
+                            </ul>
+                            <a class="btn service-card-btn" href="../pages/properties.html">Browse Properties <span aria-hidden="true">→</span></a>
+                        </div>
+                    </article>
+
+                    <article class="service-card service-card--support">
+                        <div class="service-card-visual" aria-hidden="true">
+                            <span class="service-icon">🤝</span>
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Project Support</h3>
+                            <p>Stay connected with our team from your first enquiry through design, construction and final decisions.</p>
+                            <ul class="service-features">
+                                <li>Brief clarification & feasibility</li>
+                                <li>Design coordination & value engineering</li>
+                                <li>Construction monitoring & reporting</li>
+                                <li>Handover & post-completion support</li>
+                            </ul>
+                            <a class="btn service-card-btn" href="../index.html#contact">Start a Conversation <span aria-hidden="true">→</span></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="service-detail" id="building-design" aria-labelledby="design-detail-title">
+            <div class="wrap service-layout">
+                <div class="service-visual">
+                    <div class="service-image-frame">
+                        <img src="../img/modern-home-960.webp"
+                            srcset="../img/modern-home-960.webp 960w, ../img/modern-home-1920.webp 1920w"
+                            sizes="(max-width: 900px) 100vw, 50vw" width="8000" height="4578"
+                            alt="Architect reviewing building plans" loading="lazy">
+                    </div>
+                    <div class="service-image-label">
+                        <span>01</span>
+                        <span>BUILDING DESIGN</span>
+                    </div>
+                </div>
+                <div class="service-content">
+                    <div class="mini-label">01 • BUILDING DESIGN</div>
+                    <h2>Ideas that become <span>buildable spaces.</span></h2>
+                    <p class="service-intro">We develop practical architectural concepts that balance functionality, aesthetics and the realities of construction. Every design considers how it will be built, what it will cost, and how it will perform over time.</p>
+                    <div class="service-list">
+                        <div><strong>01</strong><span>Residential & commercial designs</span></div>
+                        <div><strong>02</strong><span>Floor plans & architectural drawings</span></div>
+                        <div><strong>03</strong><span>3D concepts & visual presentations</span></div>
+                        <div><strong>04</strong><span>Planning applications & regulatory compliance</span></div>
+                        <div><strong>05</strong><span>Interior spatial planning</span></div>
+                        <div><strong>06</strong><span>Design for construction efficiency</span></div>
+                    </div>
+                    <a class="btn service-btn" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20discuss%20building%20design." target="_blank" rel="noopener noreferrer">Discuss Your Design <span>→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="service-detail construction-section" id="building-construction" aria-labelledby="construction-detail-title">
+            <div class="wrap construction-layout">
+                <div class="construction-content">
+                    <div class="mini-label construction-label">02 • BUILDING CONSTRUCTION</div>
+                    <h2>From drawings to <span>real structures.</span></h2>
+                    <p class="construction-intro">We turn approved designs into carefully executed building projects, with attention to quality, workmanship and practical project delivery. Our site teams work to clear programmes, controlled budgets and defined quality standards.</p>
+                    <div class="construction-points">
+                        <div class="construction-point"><span>01</span><div><h3>Project Execution</h3><p>Coordinated construction from groundwork through completion.</p></div></div>
+                        <div class="construction-point"><span>02</span><div><h3>Quality & Detail</h3><p>Attention to materials, workmanship and finishing throughout the project.</p></div></div>
+                        <div class="construction-point"><span>03</span><div><h3>Cost & Programme Control</h3><p>Transparent reporting, variation management and cash-flow forecasting.</p></div></div>
+                        <div class="construction-point"><span>04</span><div><h3>Health, Safety & Environment</h3><p>Site-specific HSE plans, daily inspections and compliance documentation.</p></div></div>
+                        <div class="construction-point"><span>05</span><div><h3>Renovation & Refurbishment</h3><p>Careful upgrades to existing buildings with minimal disruption.</p></div></div>
+                    </div>
+                    <a class="btn construction-btn" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20discuss%20building%20construction." target="_blank" rel="noopener noreferrer">Discuss Your Project <span>→</span></a>
+                </div>
+                <div class="construction-visual">
+                    <div class="construction-image">
+                        <img src="../img/modern-home-960.webp"
+                            srcset="../img/modern-home-960.webp 960w, ../img/modern-home-1920.webp 1920w"
+                            sizes="(max-width: 900px) 100vw, 50vw" width="8000" height="4578"
+                            alt="Construction team on site" loading="lazy">
+                    </div>
+                    <div class="construction-badge"><strong>02</strong><span>BUILD<br>WITH PURPOSE</span></div>
+                    <div class="construction-caption"><span>CONSTRUCTION</span><span>QUALITY • PRECISION • DELIVERY</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="service-detail realestate-service-section" id="real-estate" aria-labelledby="realestate-detail-title">
+            <div class="wrap">
+                <div class="realestate-heading">
+                    <div>
+                        <div class="mini-label">03 • REAL ESTATE</div>
+                        <h2>Find the right <span>property opportunity.</span></h2>
+                    </div>
+                    <p>Whether you are buying, renting or investing, we help you clarify the brief, evaluate options and move forward with confidence.</p>
+                </div>
+                <div class="realestate-services-grid">
+                    <article class="realestate-service-card">
+                        <h3>Property Acquisition</h3>
+                        <p>We help buyers and investors identify, evaluate and secure the right property—land, residential or commercial.</p>
+                    </article>
+                    <article class="realestate-service-card">
+                        <h3>Sales & Leasing</h3>
+                        <p>End-to-end representation for owners looking to sell or lease, including marketing, viewings and negotiation.</p>
+                    </article>
+                    <article class="realestate-service-card">
+                        <h3>Market Analysis</h3>
+                        <p>Data-informed insights on pricing, demand trends and comparable evidence to support your decisions.</p>
+                    </article>
+                    <article class="realestate-service-card">
+                        <h3>Due Diligence Support</h3>
+                        <p>Title verification, physical inspection coordination, planning checks and risk identification.</p>
+                    </article>
+                </div>
+                <form class="property-search" id="property-search-form" role="search" action="../pages/properties.html" method="get"
+                    data-results-url="../pages/properties.html"
+                    aria-describedby="property-search-help property-search-status">
+                    <div class="search-field"><label for="property-type">Property Type</label><select id="property-type" name="property_type"><option value="">All Properties</option><option value="land">Land</option><option value="house">House</option><option value="apartment">Apartment</option><option value="commercial">Commercial</option></select></div>
+                    <div class="search-field"><label for="property-purpose">Purpose</label><select id="property-purpose" name="property_purpose"><option value="">Buy or Rent</option><option value="sale">For Sale</option><option value="rent">For Rent</option></select></div>
+                    <div class="search-field"><label for="property-location">Location</label><input type="text" id="property-location" name="property_location" placeholder="Enter location" autocomplete="address-level2"></div>
+                    <button type="submit" class="property-search-btn">Browse Properties <span aria-hidden="true">→</span></button>
+                    <p class="search-help" id="property-search-help">Results show illustrative sample listings until live inventory is connected.</p>
+                    <p class="search-status" id="property-search-status" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+        <section class="service-detail" id="project-support" aria-labelledby="support-detail-title">
+            <div class="wrap service-layout">
+                <div class="service-visual">
+                    <div class="service-image-frame">
+                        <img src="../img/modern-home-960.webp"
+                            srcset="../img/modern-home-960.webp 960w, ../img/modern-home-1920.webp 1920w"
+                            sizes="(max-width: 900px) 100vw, 50vw" width="8000" height="4578"
+                            alt="Project meeting with client and team" loading="lazy">
+                    </div>
+                    <div class="service-image-label"><span>04</span><span>PROJECT SUPPORT</span></div>
+                </div>
+                <div class="service-content">
+                    <div class="mini-label">04 • PROJECT SUPPORT</div>
+                    <h2>One team through <span>the decisions that matter.</span></h2>
+                    <p class="service-intro">We stay engaged from the first conversation to the final handover—clarifying the brief, coordinating design, monitoring construction and supporting the decisions that shape the outcome.</p>
+                    <div class="service-list">
+                        <div><strong>01</strong><span>Brief clarification & feasibility review</span></div>
+                        <div><strong>02</strong><span>Design coordination & value engineering</span></div>
+                        <div><strong>03</strong><span>Construction monitoring & progress reporting</span></div>
+                        <div><strong>04</strong><span>Quality inspections & snagging management</span></div>
+                        <div><strong>05</strong><span>Handover coordination & documentation</span></div>
+                        <div><strong>06</strong><span>Post-completion support & warranty</span></div>
+                    </div>
+                    <a class="btn service-btn" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20would%20like%20to%20discuss%20project%20support." target="_blank" rel="noopener noreferrer">Talk to Us <span>→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-cta-section">
+            <div class="wrap">
+                <div class="home-cta">
+                    <div class="mini-label cta-label">READY TO START?</div>
+                    <h2>Let's turn your idea into something real.</h2>
+                    <p>Tell us what you want to design, construct or find. Our team is ready to discuss the next step with you.</p>
+                    <a class="btn white" href="../index.html#contact">Get a Quote</a>
+                    <a class="btn whatsapp" href="https://wa.me/2349017017156?text=Hello%20OTI-TECH%2C%20I%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module">
+        import { footerHTML } from '../components/footer.js';
+        document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    </script>
+
+    <div id="whatsapp-placeholder"></div>
+    <script type="module">
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.getElementById('whatsapp-placeholder').innerHTML = whatsAppButtonHTML('Hello OTI-TECH, I would like to discuss a project.');
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+</body>
+</html>

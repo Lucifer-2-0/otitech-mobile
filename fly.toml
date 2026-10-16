@@ -1,0 +1,28 @@
+app = "otitech-web-prod"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile.frontend"
+
+[env]
+  NODE_ENV = "production"
+  API_UPSTREAM = "otitech-api-prod.internal:3000"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = false
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
+
+[[http_service.checks]]
+  grace_period = "5s"
+  interval = "30s"
+  method = "GET"
+  path = "/"
+  timeout = "5s"

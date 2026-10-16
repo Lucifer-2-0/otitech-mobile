@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Review an OTI-TECH project case study and start a conversation about your project.">
+    <meta name="theme-color" content="#24104f">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Project Details | OTI-TECH">
+    <meta property="og:description" content="Review an OTI-TECH project case study and start a conversation about your project.">
+    <title>Project Details | OTI-TECH</title>
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        import { footerHTML } from '../components/footer.js';
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        import { breadcrumbJsonLd, projectJsonLd, renderJsonLd } from '../components/json-ld.js';
+        import { sampleProjects, normalizeProject } from '../components/project-card.js';
+        document.documentElement.classList.add('js-enabled');
+
+        // Add breadcrumb and project JSON-LD
+        const searchParams = new URLSearchParams(window.location.search);
+        const slug = searchParams.get('slug');
+        const project = sampleProjects.find(p => p.slug === slug) || sampleProjects[0];
+        const normalized = normalizeProject(project);
+        document.write(renderJsonLd(breadcrumbJsonLd([
+          { name: 'Home', url: 'https://otitech.com/' },
+          { name: 'Projects', url: 'https://otitech.com/pages/projects.html' },
+          { name: normalized.title, url: `https://otitech.com/pages/project-details.html?slug=${normalized.slug}` }
+        ])));
+        document.write(renderJsonLd(projectJsonLd(normalized)));
+    </script>
+</head>
+
+<body data-page="projects">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="navigation-placeholder">
+        <noscript>
+            <header class="nav">
+                <div class="wrap navin">
+                    <a class="logo" href="../index.html" aria-label="OTI-TECH Home"><span class="logo-text">OTI-TECH</span></a>
+                    <nav id="main-nav" aria-label="Main navigation">
+                        <a href="../index.html">Home</a>
+                        <a href="pages/services.html">Services</a>
+                        <a href="pages/properties.html">Properties</a>
+                        <a href="pages/projects.html">Projects</a>
+                        <a href="pages/about.html">About</a>
+                        <a href="pages/contact.html">Contact</a>
+                        <a href="../index.html#contact" class="nav-cta">Get a Quote</a>
+                    </nav>
+                </div>
+            </header>
+        </noscript>
+    </div>
+    <script type="module">
+        import { navigationHTML, initNavigation } from '../components/navigation.js';
+        document.getElementById('navigation-placeholder').innerHTML = navigationHTML('projects', '../');
+        initNavigation();
+    </script>
+
+    <main id="main-content" tabindex="-1">
+        <section class="detail-section">
+            <div class="wrap">
+                <a class="back-link" href="projects.html">← Back to Projects</a>
+                <div id="project-detail" class="project-detail project-detail--enhanced" aria-live="polite"></div>
+                <noscript>
+                    <p class="no-script-message">Project details are interactive sample content. Please <a href="https://wa.me/2349017017156" target="_blank" rel="noopener noreferrer">chat with OTI-TECH on WhatsApp</a> to discuss your project.</p>
+                </noscript>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module">
+        import { footerHTML } from '../components/footer.js';
+        document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    </script>
+
+    <div id="whatsapp-placeholder"></div>
+    <script type="module">
+        import { whatsAppButtonHTML } from '../components/whatsapp-button.js';
+        document.getElementById('whatsapp-placeholder').innerHTML = whatsAppButtonHTML('Hello OTI-TECH, I would like to discuss a project.');
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/projects.js"></script>
+</body>
+
+</html>

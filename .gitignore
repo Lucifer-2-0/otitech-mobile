@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.test
+!.env.example
+
+# Local editor history and assistant workspace data (may contain old secrets)
+.history/
+.kilo/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage/
+.nyc_output/
+test-results/
+
+# Uploads
+uploads/
+backend/uploads/
+
+# Database
+*.sqlite
+*.db
+
+# Misc
+*.tgz
+.cache/
+.vercel
