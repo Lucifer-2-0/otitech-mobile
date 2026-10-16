@@ -7,7 +7,12 @@ import { authenticate, authorize } from '../middleware/auth.js';
 import { z } from 'zod';
 import config from '../config/index.js';
 import { validatePassword } from '../utils/password.js';
-import { authRateLimiter, bruteForceProtection, resetLoginAttempts } from '../middleware/rateLimiter.js';
+import {
+  authRateLimiter,
+  sellerRegistrationRateLimiter,
+  bruteForceProtection,
+  resetLoginAttempts,
+} from '../middleware/rateLimiter.js';
 
 const router = Router();
 
@@ -107,7 +112,7 @@ router.post('/login', authRateLimiter, bruteForceProtection, validate(loginSchem
   }
 });
 
-router.post('/register-seller', authRateLimiter, validate(sellerRegisterSchema), async (req, res, next) => {
+router.post('/register-seller', sellerRegistrationRateLimiter, validate(sellerRegisterSchema), async (req, res, next) => {
   try {
     const existing = await userModel.findByEmail(req.validatedBody.email);
     if (existing) {

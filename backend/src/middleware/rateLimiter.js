@@ -32,6 +32,21 @@ export const authRateLimiter = rateLimit({
   keyGenerator: (req) => req.ip,
 });
 
+export const sellerRegistrationRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    success: false,
+    error: {
+      code: 'RATE_LIMITED',
+      message: 'Too many seller account creation attempts, please try again later',
+    },
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip,
+});
+
 export const mediaUploadRateLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 5,
@@ -127,6 +142,7 @@ export const resetLoginAttempts = (ip) => {
 export default {
   rateLimiter,
   authRateLimiter,
+  sellerRegistrationRateLimiter,
   mediaUploadRateLimiter,
   adminWriteRateLimiter,
   apiStrictRateLimiter,
