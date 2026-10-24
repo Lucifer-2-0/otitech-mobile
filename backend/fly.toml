@@ -9,7 +9,7 @@ primary_region = "iad"
   API_PREFIX = "/api/v1"
   PORT = "3000"
   LOG_LEVEL = "info"
-  CORS_ORIGIN = "https://otitech-frontend.vercel.app,https://otitech-frontend.vercel.app"
+  CORS_ORIGIN = "https://otitech-frontend.vercel.app,https://otitech.com,https://www.otitech.com"
 
 [deploy]
   release_command = "node src/migrate.js"

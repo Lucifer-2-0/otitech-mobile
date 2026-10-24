@@ -438,12 +438,12 @@ textarea:focus-visible {
     align-items: center;
     overflow: hidden;
     color: #fff;
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/family-house.webp") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .home-hero {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/family-house-hero.webp");
     }
 }
 
@@ -3032,12 +3032,12 @@ body {
    ========================= */
 
 .page-hero--contact {
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/project-support-team.jpg") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .page-hero--contact {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/project-support-team.jpg");
     }
 }
 
@@ -3289,12 +3289,12 @@ body {
    ========================= */
 
 .page-hero--properties {
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/apartment-lagos.webp") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .page-hero--properties {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/apartment-lagos.webp");
     }
 }
 
@@ -3952,12 +3952,12 @@ body {
    ========================= */
 
 .page-hero--services {
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/construction-site.webp") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .page-hero--services {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/construction-site.webp");
     }
 }
 
@@ -4144,12 +4144,12 @@ body {
    ========================= */
 
 .page-hero--projects {
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/office-tower.webp") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .page-hero--projects {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/office-tower.webp");
     }
 }
 
@@ -4482,12 +4482,12 @@ body {
    ========================= */
 
 .page-hero--about {
-    background: var(--d) url("../img/modern-home-960.webp") center / cover no-repeat;
+    background: var(--d) url("../img/context/architect-sketch.webp") center / cover no-repeat;
 }
 
 @media (min-width: 960px) {
     .page-hero--about {
-        background-image: url("../img/modern-home-1920.webp");
+        background-image: url("../img/context/architect-sketch.webp");
     }
 }
 

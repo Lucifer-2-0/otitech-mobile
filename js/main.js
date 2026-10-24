@@ -1,7 +1,9 @@
 import { preparePropertyEnquiry, handleContactFormSubmit, handlePropertySearchSubmit, initContact } from './contact.js';
+import { initHeroCarousel } from '../components/hero-carousel.js';
 
 (() => {
     initContact();
+    initHeroCarousel();
 
     const contactSection = document.querySelector('#contact');
     const contactName = document.querySelector('#contact-name');

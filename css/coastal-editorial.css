@@ -1,0 +1,2056 @@
+/* OTI-TECH's calm, property-led visual system. Loaded after style.css. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --p: #4b2398;
+    --d: #24104f;
+    --l: #f6f2fb;
+    --ink: #17131f;
+    --muted: #716b7c;
+    --white: #fff;
+    --border: #e5e1e9;
+    --gold: #d4af37;
+    --shadow-soft: 0 14px 40px rgba(36, 16, 79, .08);
+    --shadow-lift: 0 18px 42px rgba(36, 16, 79, .12);
+}
+
+html {
+    scroll-padding-top: 96px;
+    background: #fff;
+}
+
+body {
+    color: var(--ink);
+    background: #fff;
+    font-family: Inter, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+h1,
+h2,
+h3,
+h4,
+.logo,
+.logo-text,
+.footer-logo {
+    font-family: "Nunito Sans", Inter, sans-serif;
+}
+
+.wrap {
+    width: min(1240px, calc(100% - 56px));
+}
+
+::selection {
+    color: #fff;
+    background: var(--p);
+}
+
+a {
+    color: var(--p);
+}
+
+.btn,
+.property-search-btn,
+.filter-submit,
+.filter-reset,
+.contact-submit {
+    min-height: 52px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.25;
+    text-transform: none;
+}
+
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline-color: #4b2398;
+}
+
+/* Navigation */
+.nav {
+    z-index: 1000;
+    background: rgba(255, 255, 255, .98);
+    border-bottom: 1px solid rgba(217, 226, 236, .82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.navin {
+    min-height: 82px;
+    gap: 22px;
+}
+
+.logo {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.logo-text,
+.footer-logo {
+    color: var(--ink);
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: -.06em;
+    text-decoration: none;
+}
+
+#main-nav {
+    gap: 3px;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#main-nav a {
+    padding: 10px 13px;
+    color: #514b5a;
+    border-radius: 999px;
+}
+
+#main-nav a:hover,
+#main-nav a:focus-visible,
+#main-nav a[aria-current="page"]:not(.nav-cta) {
+    color: var(--p);
+    background: #f0ebf8;
+}
+
+#main-nav .nav-cta,
+#main-nav .nav-cta:hover,
+#main-nav .nav-cta:focus-visible {
+    margin-left: 8px;
+    padding: 12px 19px;
+    color: #fff;
+    background: var(--p);
+}
+
+.nav-toggle {
+    border-color: var(--border);
+    border-radius: 50%;
+}
+
+.nav-toggle span {
+    background: var(--d);
+}
+
+/* Home hero and property search */
+.home-hero {
+    min-height: 750px;
+    padding: 38px 0 48px;
+    align-items: center;
+    background-color: var(--d);
+    background-position: center 55%;
+}
+
+.home-hero .wrap {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-overlay {
+    background:
+        linear-gradient(90deg, rgba(36, 16, 79, .76) 0%, rgba(36, 16, 79, .48) 48%, rgba(36, 16, 79, .12) 100%),
+        linear-gradient(0deg, rgba(36, 16, 79, .28), transparent 42%);
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 46px 0 22px;
+}
+
+.hero-kicker {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+}
+
+.kicker-dot {
+    background: var(--gold);
+}
+
+.home-hero h1 {
+    max-width: 820px;
+    margin: 22px 0 20px;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: clamp(54px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -.055em;
+}
+
+.home-hero h1 span {
+    color: #e8ddf7;
+}
+
+.hero-lead {
+    max-width: 610px;
+    color: rgba(255, 255, 255, .9);
+    font-size: 17px;
+    line-height: 1.75;
+}
+
+.hero-actions {
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.hero-primary,
+.hero-primary:hover {
+    color: #fff;
+    background: var(--p);
+}
+
+.hero-secondary,
+.hero-secondary:hover {
+    color: #fff;
+    background: rgba(36, 16, 79, .22);
+    border-color: rgba(255, 255, 255, .7);
+}
+
+.hero-note {
+    margin-top: 21px;
+    color: rgba(255, 255, 255, .82);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.hero-scroll {
+    display: none;
+}
+
+.hero-search-panel {
+    position: relative;
+    z-index: 3;
+    width: min(100%, 1090px);
+    margin: 20px 0 -92px;
+    padding: 20px 24px 16px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid rgba(217, 226, 236, .86);
+    border-radius: 18px;
+    box-shadow: 0 22px 58px rgba(36, 16, 79, .2);
+}
+
+.hero-search-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 13px;
+}
+
+.hero-search-heading .mini-label {
+    margin: 0;
+}
+
+.hero-search-heading h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+}
+
+.hero-search-panel .property-search,
+.property-search {
+    padding: 0;
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.property-search {
+    gap: 12px;
+}
+
+.search-field {
+    gap: 6px;
+}
+
+.search-field label {
+    color: #514b5a;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: none;
+}
+
+.search-field select,
+.search-field input {
+    height: 52px;
+    padding: 0 15px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.search-field input::placeholder {
+    color: #9ca3af;
+}
+
+.search-field select:focus,
+.search-field input:focus {
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(75, 35, 152, .12);
+}
+
+.property-search-btn {
+    color: #fff;
+    background: var(--p);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.property-search-btn:hover {
+    color: #fff;
+    background: #3b1c78;
+}
+
+.search-help,
+.search-status {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* Home sections */
+#main-content > section {
+    scroll-margin-top: 96px;
+}
+
+.home-stats {
+    padding: 0;
+    background: #fff;
+}
+
+.stats-box {
+    padding: 28px 0;
+    background: #fff;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.stat {
+    padding: 4px 20px;
+    border-color: var(--border);
+}
+
+.stat strong {
+    color: var(--gold);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.stat span {
+    color: var(--ink);
+    font-size: 12px;
+    letter-spacing: .06em;
+}
+
+.stat small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.home-intro,
+.service-section,
+.realestate-section,
+.projects-section,
+.about-section,
+.contact-section,
+.mission-section,
+.team-section,
+.timeline-section,
+.services-overview,
+.listing-section,
+.projects-filter-section,
+.about-story-section,
+.values-section,
+.map-section,
+.faq-section {
+    padding-block: 92px;
+}
+
+.home-intro,
+.realestate-section,
+.service-section,
+.mission-section,
+.timeline-section,
+.listing-section,
+.services-overview,
+.about-story-section,
+.map-section {
+    background: #fff;
+}
+
+.projects-section,
+.construction-section,
+.about-section,
+.team-section,
+.values-section,
+.faq-section,
+.projects-filter-section {
+    background: var(--l);
+}
+
+.intro-heading,
+.projects-heading,
+.realestate-heading,
+.about-heading,
+.page-section-heading {
+    margin-bottom: 38px;
+}
+
+.intro-heading h2,
+.realestate-heading h2,
+.projects-heading h2,
+.about-heading h2,
+.service-content h2,
+.construction-content h2,
+.contact-info h2,
+.mission-section h2,
+.team-section h2,
+.timeline-section h2,
+.map-heading h2,
+.faq-section h2,
+.services-overview h2 {
+    color: var(--ink);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: clamp(34px, 4.2vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.045em;
+}
+
+.intro-heading h2 span,
+.realestate-heading h2 span,
+.projects-heading h2 span,
+.about-heading h2 span,
+.service-content h2 span,
+.construction-content h2 span,
+.contact-info h2 span {
+    color: var(--p);
+}
+
+.mini-label,
+.eyebrow {
+    color: var(--p);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+}
+
+.mini-label::before {
+    width: 20px;
+    background: var(--gold);
+}
+
+.intro-heading p,
+.realestate-heading > p,
+.projects-heading > p,
+.about-content p,
+.service-intro,
+.construction-intro,
+.contact-info > p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.intro-services,
+.realestate-services-grid {
+    gap: 16px;
+}
+
+.service-mini,
+.service-card,
+.realestate-service-card,
+.mission-card,
+.team-card,
+.about-value {
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: none;
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.service-mini:hover,
+.service-card:hover,
+.realestate-service-card:hover,
+.mission-card:hover,
+.team-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(75, 35, 152, .45);
+    box-shadow: var(--shadow-soft);
+}
+
+.service-mini .num,
+.service-card .num,
+.service-list strong,
+.construction-point > span,
+.about-value > strong {
+    color: var(--p);
+    font-family: "Nunito Sans", Inter, sans-serif;
+}
+
+.service-icon,
+.mission-icon {
+    color: var(--p);
+}
+
+.service-mini .service-icon {
+    color: var(--p);
+    background: #f0ebf8;
+    border: 1px solid rgba(75, 35, 152, .12);
+}
+
+.service-mini h3,
+.service-card h3,
+.realestate-service-card h3,
+.mission-card h3,
+.team-card h3,
+.about-value h3 {
+    color: var(--ink);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.service-mini p,
+.service-card p,
+.realestate-service-card p,
+.mission-card p,
+.team-bio,
+.about-value p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.service-mini a,
+.service-card-btn,
+.service-btn,
+.construction-btn,
+.text-link,
+.projects-footer a {
+    color: var(--p);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.service-image-frame,
+.construction-image,
+.service-visual,
+.construction-visual,
+.project-image,
+.project-card-image,
+.detail-visual,
+.project-detail-visual {
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.service-image-frame::after {
+    background: linear-gradient(0deg, rgba(36, 16, 79, .16), transparent 55%);
+}
+
+.service-image-label,
+.construction-badge {
+    border-radius: 14px;
+    background: #fff;
+    color: var(--ink);
+    box-shadow: var(--shadow-soft);
+}
+
+.construction-badge strong {
+    color: var(--p);
+}
+
+.construction-caption {
+    color: var(--muted);
+}
+
+/* The construction copy sits on a light section surface, so keep its text dark. */
+.construction-section {
+    color: var(--ink);
+}
+
+.construction-content h2 span {
+    color: var(--p);
+}
+
+.construction-intro,
+.construction-point p,
+.construction-caption {
+    color: var(--muted);
+}
+
+.construction-points,
+.construction-point {
+    border-color: var(--border);
+}
+
+.construction-point > span {
+    color: var(--p);
+}
+
+.construction-point h3 {
+    color: var(--ink);
+}
+
+.service-section .service-layout,
+.construction-layout {
+    gap: clamp(36px, 6vw, 80px);
+}
+
+/* Property discovery and selected work */
+.realestate-heading {
+    align-items: end;
+}
+
+.property-showcase {
+    gap: 18px;
+}
+
+.property-enquiry-card {
+    position: relative;
+    min-height: 350px;
+    overflow: hidden;
+    color: #fff;
+    background: var(--d);
+    border: 0;
+    border-radius: 18px;
+    isolation: isolate;
+}
+
+.property-enquiry-card::before,
+.property-enquiry-card::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+}
+
+.property-enquiry-card::before {
+    z-index: -2;
+    background-position: center;
+    background-size: cover;
+    transition: transform .5s ease;
+}
+
+.property-enquiry-card:nth-child(1)::before {
+    background-image: url("../img/context/development-land.webp");
+}
+
+.property-enquiry-card:nth-child(2)::before {
+    background-image: url("../img/context/residence-lagos.webp");
+}
+
+.property-enquiry-card:nth-child(3)::before {
+    background-image: url("../img/context/office-interior.webp");
+}
+
+.property-enquiry-card::after {
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(36, 16, 79, .02) 10%, rgba(36, 16, 79, .82) 100%);
+}
+
+.property-enquiry-card:hover::before {
+    transform: scale(1.035);
+}
+
+.property-enquiry-card .property-body {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 28px;
+}
+
+.property-enquiry-card .property-tag {
+    color: #f6e6a8;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+}
+
+.property-enquiry-card h3 {
+    margin: 9px 0;
+    color: #fff;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+}
+
+.property-enquiry-card p {
+    margin: 0 0 18px;
+    color: rgba(255, 255, 255, .88);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.property-enquiry-card a {
+    color: #fff;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration-color: rgba(255, 255, 255, .6);
+    text-underline-offset: 5px;
+}
+
+.projects-grid {
+    gap: 18px;
+}
+
+.project-image,
+.project-card-image {
+    background: #f0edf5;
+}
+
+.project-image img,
+.project-card-image img {
+    transition: transform .5s ease;
+}
+
+.project-card:hover .project-image img,
+.project-card--enhanced:hover .project-card-image img {
+    transform: scale(1.035);
+}
+
+.project-overlay {
+    background: linear-gradient(0deg, rgba(36, 16, 79, .82), rgba(36, 16, 79, .05) 70%);
+}
+
+.project-info span,
+.project-number {
+    color: rgba(255, 255, 255, .86);
+}
+
+.home-cta-section {
+    padding: 20px 0 92px;
+    background: #fff;
+}
+
+.home-cta,
+.page-cta-section .wrap > div {
+    padding: clamp(34px, 5vw, 64px);
+    background: var(--d);
+    border-radius: 20px;
+}
+
+.home-cta h2,
+.page-cta-section h2 {
+    color: #fff;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -.04em;
+}
+
+.home-cta p,
+.page-cta-section p {
+    color: rgba(255, 255, 255, .78);
+}
+
+.home-cta .btn.white,
+.page-cta-section .btn {
+    color: var(--p);
+    background: #fff;
+    border-radius: 999px;
+}
+
+/* Interior page photography heroes */
+.page-hero {
+    min-height: 470px;
+    background-color: var(--d);
+}
+
+.page-hero::before {
+    background: linear-gradient(90deg, rgba(36, 16, 79, .76), rgba(36, 16, 79, .35) 72%, rgba(36, 16, 79, .16));
+}
+
+.page-hero .wrap {
+    padding-block: 82px;
+}
+
+.page-hero-content {
+    max-width: 780px;
+}
+
+.page-hero .eyebrow {
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    color: #f6e6a8;
+    font-size: 12px;
+}
+
+.page-hero .eyebrow::before {
+    display: none;
+}
+
+.page-hero h1 {
+    max-width: 780px;
+    margin: 14px 0 18px;
+    color: #fff;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: clamp(48px, 6.6vw, 78px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -.055em;
+}
+
+.page-hero h1 span {
+    color: #e8ddf7;
+}
+
+.page-hero > .wrap > .page-hero-content > p:not(.eyebrow) {
+    max-width: 620px;
+    color: rgba(255, 255, 255, .88);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.page-hero-actions {
+    gap: 10px;
+    margin-top: 26px;
+}
+
+.page-hero .btn-primary {
+    color: #fff;
+    background: var(--p);
+}
+
+.page-hero .btn-secondary {
+    color: #fff;
+    background: rgba(36, 16, 79, .2);
+    border-color: rgba(255, 255, 255, .65);
+}
+
+.page-hero .btn-whatsapp {
+    color: #fff;
+    background: var(--p);
+}
+
+/* Property and project search */
+.listing-filter--advanced,
+.listing-filter--projects {
+    padding: 26px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+}
+
+.filter-field label {
+    color: #514b5a;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: none;
+}
+
+.filter-field input,
+.filter-field select {
+    height: 50px;
+    color: var(--ink);
+    border-color: var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(75, 35, 152, .12);
+}
+
+.filter-actions {
+    border-color: var(--border);
+}
+
+.filter-submit {
+    color: #fff;
+    background: var(--p);
+}
+
+.filter-submit:hover {
+    background: #3b1c78;
+    transform: none;
+}
+
+.filter-reset {
+    color: var(--ink);
+    border-color: var(--border);
+    border-radius: 999px;
+}
+
+.listing-results-header {
+    border-color: var(--border);
+}
+
+.listing-status,
+.results-count,
+.listing-count {
+    color: var(--muted);
+}
+
+.listing-count {
+    font-weight: 700;
+}
+
+.listing-card--enhanced,
+.project-card--enhanced {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: none;
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.listing-card--enhanced:hover,
+.project-card--enhanced:hover {
+    transform: translateY(-3px);
+    border-color: rgba(75, 35, 152, .4);
+    box-shadow: var(--shadow-lift);
+}
+
+.listing-card-image,
+.project-card-image {
+    background: #f0edf5;
+}
+
+.listing-card-body,
+.project-card-body {
+    padding: 22px;
+}
+
+.listing-card-body h2,
+.project-card-body h2 {
+    color: var(--ink);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -.025em;
+}
+
+.listing-card-meta,
+.listing-card-facts,
+.project-card-meta,
+.project-card-facts,
+.listing-location,
+.project-location,
+.listing-summary,
+.project-summary {
+    color: var(--muted);
+}
+
+.listing-price {
+    color: var(--p);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-weight: 800;
+}
+
+.listing-card-btn,
+.project-card-btn {
+    color: #fff;
+    background: var(--p);
+    border-radius: 999px;
+}
+
+.listing-card-btn:hover,
+.project-card-btn:hover {
+    color: #fff;
+    background: #3b1c78;
+}
+
+.property-status-indicator,
+.project-status-badge,
+.project-category-badge,
+.property-type-badge {
+    border-radius: 999px;
+    box-shadow: 0 2px 12px rgba(36, 16, 79, .08);
+    letter-spacing: .02em;
+}
+
+.property-detail--enhanced,
+.project-detail--enhanced {
+    gap: clamp(32px, 5vw, 64px);
+}
+
+.detail-section {
+    padding-block: 72px 96px;
+    background: #fff;
+}
+
+.detail-visual img,
+.project-detail-visual > img {
+    border-radius: 18px;
+}
+
+.detail-content,
+.project-detail-content {
+    color: var(--ink);
+}
+
+.detail-header h1,
+.project-detail-header h1 {
+    color: var(--ink);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.045em;
+}
+
+.detail-lead,
+.project-detail-lead,
+.detail-meta,
+.project-detail-meta {
+    color: var(--muted);
+}
+
+.detail-facts,
+.project-highlights li,
+.detail-features li {
+    color: #374151;
+}
+
+.detail-primary,
+.detail-secondary {
+    border-radius: 999px;
+}
+
+/* About, services and contact */
+.mission-card,
+.team-card {
+    text-align: left;
+}
+
+.mission-icon {
+    font-size: 34px;
+}
+
+.team-avatar {
+    margin-inline: 0;
+    color: #fff;
+    background: var(--p);
+    font-family: "Nunito Sans", Inter, sans-serif;
+}
+
+.team-role,
+.timeline-year {
+    color: var(--p);
+    background: #f0ebf8;
+    border-radius: 999px;
+}
+
+.timeline::before {
+    background: var(--border);
+}
+
+.timeline-item::before {
+    background: var(--p);
+    box-shadow: 0 0 0 2px var(--p);
+}
+
+.service-card-visual {
+    border-radius: 14px;
+    background: #f0ebf8;
+}
+
+.service-card--design .service-card-visual,
+.service-card--construction .service-card-visual,
+.service-card--realestate .service-card-visual,
+.service-card--support .service-card-visual {
+    color: var(--p);
+    background: #f0ebf8;
+}
+
+.service-card-visual .service-icon {
+    color: var(--p);
+    background: transparent;
+    border: 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -.06em;
+}
+
+.service-features li::before {
+    background: var(--p);
+}
+
+.contact-layout--page {
+    gap: clamp(32px, 6vw, 80px);
+}
+
+.contact-item,
+.contact-form-container,
+.contact-form,
+.faq-item {
+    border-radius: 16px;
+}
+
+.contact-item,
+.contact-form-container {
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+}
+
+.contact-icon {
+    color: var(--p);
+    background: #f0ebf8;
+}
+
+.contact-label-text,
+.form-group label {
+    color: #514b5a;
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+.contact-value {
+    color: var(--ink);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: Inter, "Segoe UI", sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(75, 35, 152, .12);
+}
+
+.contact-submit {
+    color: #fff;
+    background: var(--p);
+}
+
+.contact-submit:hover {
+    background: #3b1c78;
+}
+
+.map-container,
+.faq-item {
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.faq-item {
+    background: #fff;
+}
+
+.faq-item summary {
+    color: var(--ink);
+    font-family: "Nunito Sans", Inter, sans-serif;
+    font-weight: 700;
+}
+
+/* Footer and status surfaces */
+.site-footer {
+    color: rgba(255, 255, 255, .76);
+    background: var(--d);
+}
+
+.footer-logo {
+    color: #fff;
+}
+
+.footer-column h3 {
+    color: #fff;
+    font-family: "Nunito Sans", Inter, sans-serif;
+}
+
+.footer-column a,
+.footer-column span,
+.footer-brand p,
+.footer-bottom {
+    color: rgba(255, 255, 255, .68);
+}
+
+.footer-column a:hover,
+.footer-whatsapp {
+    color: #dcd0ed;
+}
+
+.footer-bottom {
+    border-color: rgba(255, 255, 255, .16);
+}
+
+.loading-state,
+.empty-state {
+    color: var(--muted);
+    background: var(--l);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.error-state {
+    border-radius: 16px;
+}
+
+.cookie-consent {
+    border-color: var(--border);
+    box-shadow: 0 -10px 34px rgba(36, 16, 79, .1);
+}
+
+@media (max-width: 900px) {
+    .wrap {
+        width: min(100% - 40px, 720px);
+    }
+
+    .home-hero {
+        min-height: 760px;
+        padding-block: 34px 70px;
+    }
+
+    .hero-search-panel {
+        margin-bottom: -96px;
+    }
+
+    .hero-search-panel .property-search,
+    .property-search {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-search-panel .property-search-btn,
+    .hero-search-panel .search-help,
+    .hero-search-panel .search-status {
+        grid-column: 1 / -1;
+    }
+
+    .home-intro,
+    .service-section,
+    .realestate-section,
+    .projects-section,
+    .about-section,
+    .contact-section,
+    .mission-section,
+    .team-section,
+    .timeline-section,
+    .services-overview,
+    .listing-section,
+    .projects-filter-section,
+    .about-story-section,
+    .values-section,
+    .map-section,
+    .faq-section {
+        padding-block: 76px;
+    }
+
+    .property-showcase,
+    .listing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .property-showcase .property-enquiry-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .page-hero {
+        min-height: 430px;
+    }
+
+    .page-hero .wrap {
+        padding-block: 70px;
+    }
+}
+
+@media (max-width: 600px) {
+    .wrap {
+        width: calc(100% - 32px);
+    }
+
+    .navin {
+        min-height: 70px;
+    }
+
+    .logo-text {
+        font-size: 21px;
+    }
+
+    .js-enabled #main-nav {
+        padding: 12px 16px 18px;
+        background: #fff;
+        border-color: var(--border);
+        box-shadow: 0 18px 34px rgba(36, 16, 79, .12);
+    }
+
+    .js-enabled #main-nav a {
+        border-radius: 12px;
+    }
+
+    .home-hero {
+        min-height: 790px;
+        padding: 26px 0 84px;
+        align-items: flex-start;
+        background-position: 57% center;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(90deg, rgba(36, 16, 79, .74), rgba(36, 16, 79, .38)),
+            linear-gradient(0deg, rgba(36, 16, 79, .34), transparent 55%);
+    }
+
+    .hero-content {
+        padding: 42px 0 18px;
+    }
+
+    .hero-kicker {
+        flex-wrap: wrap;
+        gap: 7px;
+        font-size: 10px;
+        letter-spacing: .1em;
+    }
+
+    .home-hero h1 {
+        margin: 19px 0 16px;
+        font-size: clamp(43px, 12vw, 62px);
+        line-height: 1.02;
+        letter-spacing: -.05em;
+    }
+
+    .hero-lead {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 300px;
+    }
+
+    .hero-actions .btn {
+        justify-content: center;
+    }
+
+    .hero-note {
+        gap: 16px;
+        font-size: 11px;
+    }
+
+    .hero-search-panel {
+        margin: 15px 0 -122px;
+        padding: 18px 16px 14px;
+        border-radius: 16px;
+    }
+
+    .hero-search-heading {
+        display: block;
+    }
+
+    .hero-search-heading h2 {
+        margin-top: 5px;
+        font-size: 20px;
+    }
+
+    .hero-search-panel .property-search,
+    .property-search {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-search-panel .property-search-btn,
+    .hero-search-panel .search-help,
+    .hero-search-panel .search-status {
+        grid-column: auto;
+    }
+
+    .search-field select,
+    .search-field input {
+        height: 48px;
+    }
+
+    .stats-box {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 0;
+        padding: 23px 0;
+    }
+
+    .stat {
+        padding: 3px 10px;
+    }
+
+    .stat:nth-child(2) {
+        border-right: 0;
+    }
+
+    .stat strong {
+        font-size: 16px;
+    }
+
+    .stat span,
+    .stat small {
+        font-size: 10px;
+    }
+
+    .home-intro,
+    .service-section,
+    .realestate-section,
+    .projects-section,
+    .about-section,
+    .contact-section,
+    .mission-section,
+    .team-section,
+    .timeline-section,
+    .services-overview,
+    .listing-section,
+    .projects-filter-section,
+    .about-story-section,
+    .values-section,
+    .map-section,
+    .faq-section {
+        padding-block: 62px;
+    }
+
+    .intro-heading h2,
+    .realestate-heading h2,
+    .projects-heading h2,
+    .about-heading h2,
+    .service-content h2,
+    .construction-content h2,
+    .contact-info h2,
+    .mission-section h2,
+    .team-section h2,
+    .timeline-section h2,
+    .map-heading h2,
+    .faq-section h2,
+    .services-overview h2 {
+        font-size: clamp(32px, 9vw, 42px);
+        line-height: 1.1;
+    }
+
+    .intro-services,
+    .property-showcase,
+    .listing-grid,
+    .mission-grid,
+    .team-grid,
+    .realestate-services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .property-showcase .property-enquiry-card:last-child {
+        grid-column: auto;
+    }
+
+    .property-enquiry-card,
+    .property-enquiry-card .property-body {
+        min-height: 300px;
+    }
+
+    .property-enquiry-card .property-body {
+        padding: 23px;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-large,
+    .project-wide {
+        grid-column: auto;
+    }
+
+    .home-cta-section {
+        padding: 10px 0 62px;
+    }
+
+    .home-cta,
+    .page-cta-section .wrap > div {
+        padding: 30px 23px;
+        border-radius: 16px;
+    }
+
+    .page-hero {
+        min-height: 410px;
+    }
+
+    .page-hero .wrap {
+        padding-block: 58px;
+    }
+
+    .page-hero h1 {
+        font-size: clamp(42px, 12vw, 58px);
+        letter-spacing: -.05em;
+    }
+
+    .page-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 320px;
+    }
+
+    .page-hero .btn {
+        justify-content: center;
+    }
+
+    .filter-row,
+    .filter-row--price {
+        grid-template-columns: 1fr;
+    }
+
+    .listing-filter--advanced,
+    .listing-filter--projects {
+        padding: 18px;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+
+    .filter-reset {
+        min-height: 48px;
+    }
+
+    .listing-results-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .contact-form-container {
+        padding: 20px;
+    }
+
+    .contact-layout--page {
+        gap: 28px;
+    }
+}
+
+/* Final layout refinements for the editorial card grids. */
+.service-mini a {
+    left: 24px;
+    bottom: 22px;
+}
+
+.property-enquiry-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.listing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.filter-row {
+    gap: 14px;
+}
+
+.about-values {
+    gap: 14px;
+    margin-top: 48px;
+    border: 0;
+}
+
+.about-value {
+    min-height: 200px;
+}
+
+@media (max-width: 900px) {
+    .listing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-field--wide {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .listing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-field--wide {
+        grid-column: auto;
+    }
+}
+
+/* Floating glass navigation and an immersive home-image carousel */
+html {
+    scroll-padding-top: 108px;
+}
+
+.nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 1000;
+    padding: 12px 0 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    pointer-events: none;
+}
+
+.navin {
+    position: relative;
+    width: min(calc(100% - 32px), 1320px);
+    max-width: 1320px;
+    min-height: 68px;
+    margin: 0 auto;
+    padding: 7px clamp(15px, 2.4vw, 30px);
+    gap: clamp(12px, 1.6vw, 24px);
+    border: 1px solid rgba(255, 255, 255, .72);
+    border-radius: 999px;
+    background: linear-gradient(105deg, rgba(255, 255, 255, .84), rgba(255, 255, 255, .70));
+    box-shadow: 0 12px 36px rgba(36, 16, 79, .16);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    backdrop-filter: blur(22px) saturate(145%);
+    pointer-events: auto;
+}
+
+.logo {
+    gap: 8px;
+}
+
+.logo-text {
+    color: #24104f;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -.065em;
+    white-space: nowrap;
+}
+
+#main-nav {
+    flex: 1 1 auto;
+    justify-content: center;
+    gap: 2px;
+    font-size: 12.5px;
+    font-weight: 650;
+}
+
+#main-nav a {
+    min-height: 42px;
+    padding: 9px 10px;
+    color: #4a4654;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: color .2s ease, background .2s ease, transform .2s ease;
+}
+
+#main-nav a:hover,
+#main-nav a:focus-visible,
+#main-nav a[aria-current="page"]:not(.nav-cta) {
+    color: #24104f;
+    background: rgba(255, 255, 255, .76);
+}
+
+#main-nav a[aria-current="page"]:not(.nav-cta) {
+    font-weight: 750;
+}
+
+#main-nav .nav-cta,
+#main-nav .nav-cta:hover,
+#main-nav .nav-cta:focus-visible {
+    min-height: 44px;
+    margin-left: 6px;
+    padding: 11px 17px;
+    color: #fff;
+    background: var(--p);
+    box-shadow: 0 5px 14px rgba(36, 16, 79, .14);
+}
+
+#main-nav .nav-cta:hover,
+#main-nav .nav-cta:focus-visible {
+    background: var(--d);
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .34);
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+    background: rgba(255, 255, 255, .74);
+}
+
+.nav-toggle span {
+    width: 21px;
+    background: #24104f;
+}
+
+.home-hero {
+    isolation: isolate;
+    min-height: max(760px, 100svh);
+    padding: 132px 0 126px;
+    background: var(--d);
+}
+
+.hero-carousel {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: var(--d);
+}
+
+.hero-carousel__slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(1.065);
+    transition: opacity 1.05s ease, transform 7s cubic-bezier(.2, .65, .25, 1);
+    will-change: opacity, transform;
+}
+
+.hero-carousel__slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.hero-carousel__slide picture,
+.hero-carousel__slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-carousel__slide img {
+    object-fit: cover;
+    object-position: center 54%;
+}
+
+.hero-overlay {
+    z-index: 1;
+    background:
+        linear-gradient(90deg, rgba(11, 18, 27, .70) 0%, rgba(11, 18, 27, .46) 48%, rgba(11, 18, 27, .16) 100%),
+        linear-gradient(0deg, rgba(11, 18, 27, .30), transparent 48%);
+}
+
+.hero-carousel__controls {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.hero-carousel__arrow {
+    position: absolute;
+    top: 49%;
+    display: grid;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    place-items: center;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .34);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .14);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.hero-carousel__arrow:hover {
+    transform: scale(1.06);
+    background: rgba(255, 255, 255, .30);
+}
+
+.hero-carousel__arrow:focus-visible,
+.hero-carousel__pagination button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.hero-carousel__arrow svg {
+    width: 21px;
+    height: 21px;
+}
+
+.hero-carousel__arrow--previous {
+    left: clamp(16px, 3.8vw, 48px);
+}
+
+.hero-carousel__arrow--next {
+    right: clamp(16px, 3.8vw, 48px);
+}
+
+.hero-carousel__pagination {
+    position: absolute;
+    right: clamp(25px, 6vw, 84px);
+    bottom: 27px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    pointer-events: auto;
+}
+
+.hero-carousel__pagination button {
+    display: grid;
+    min-width: 30px;
+    min-height: 44px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.hero-carousel__pagination button span {
+    display: block;
+    width: 8px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .54);
+    transition: width .25s ease, background .25s ease;
+}
+
+.hero-carousel__pagination button[aria-pressed="true"] span {
+    width: 30px;
+    background: #fff;
+}
+
+@media (max-width: 1024px) {
+    .nav {
+        padding-top: 10px;
+    }
+
+    .navin {
+        min-height: 64px;
+        padding-inline: 15px;
+        gap: 12px;
+    }
+
+    .logo-text {
+        font-size: 21px;
+    }
+
+    .js-enabled .nav-toggle {
+        display: inline-flex;
+    }
+
+    .js-enabled #main-nav {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        flex: initial;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 3px;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, .78);
+        border-radius: 24px;
+        background: rgba(250, 251, 252, .97);
+        box-shadow: 0 18px 44px rgba(36, 16, 79, .20);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        backdrop-filter: blur(24px) saturate(150%);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+    }
+
+    .js-enabled #main-nav.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .js-enabled #main-nav a {
+        width: 100%;
+        min-height: 46px;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        border-radius: 15px;
+        font-size: 14px;
+    }
+
+    .js-enabled #main-nav .nav-cta {
+        justify-content: center;
+        margin: 5px 0 0;
+    }
+
+    .js-enabled body.nav-open {
+        overflow: hidden;
+    }
+
+    html:not(.js-enabled) .navin {
+        flex-wrap: wrap;
+        height: auto;
+        border-radius: 25px;
+    }
+
+    html:not(.js-enabled) #main-nav {
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 3px;
+    }
+
+    .home-hero {
+        min-height: max(820px, 100svh);
+        padding: 112px 0 138px;
+    }
+
+    .hero-carousel__arrow {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hero-note {
+        justify-content: center;
+        padding-inline: clamp(32px, 7vw, 54px);
+    }
+}
+
+@media (max-width: 600px) {
+    .nav {
+        padding-top: 9px;
+    }
+
+    .navin {
+        width: calc(100% - 24px);
+        min-height: 60px;
+        padding: 6px 12px;
+        gap: 8px;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+
+    .nav-toggle {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    .js-enabled #main-nav {
+        top: calc(100% + 9px);
+        padding: 9px;
+        border-radius: 21px;
+    }
+
+    .home-hero {
+        min-height: max(850px, 100svh);
+        padding: 100px 0 150px;
+        align-items: flex-start;
+        background-position: center;
+    }
+
+    .hero-carousel__slide img {
+        object-position: 58% center;
+    }
+
+    .hero-note {
+        justify-content: center;
+        padding-inline: 44px;
+    }
+
+    .hero-overlay {
+        background:
+            linear-gradient(90deg, rgba(11, 18, 27, .72), rgba(11, 18, 27, .36)),
+            linear-gradient(0deg, rgba(11, 18, 27, .42), transparent 54%);
+    }
+
+    .hero-carousel__arrow {
+        top: 43%;
+        width: 38px;
+        height: 38px;
+    }
+
+    .hero-carousel__arrow--previous {
+        left: 10px;
+    }
+
+    .hero-carousel__arrow--next {
+        right: 10px;
+    }
+
+    .hero-carousel__pagination {
+        right: 20px;
+        bottom: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-carousel__slide,
+    .hero-carousel__pagination button span,
+    .hero-carousel__arrow {
+        transition-duration: .01ms;
+    }
+}
+
+@media (max-width: 900px) {
+    .services-grid,
+    .realestate-services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .services-grid,
+    .realestate-services-grid {
+        grid-template-columns: 1fr;
+    }
+}

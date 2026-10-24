@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description"
-        content="OTI-TECH provides practical building design, construction and real-estate support for homes, businesses and property investors.">
+        content="OTI-TECH provides practical building design, construction and real-estate support for homes, businesses and property seekers.">
     <meta name="theme-color" content="#24104f">
     <meta property="og:type" content="website">
     <meta property="og:title" content="OTI-TECH | Design, Construction &amp; Real Estate">
@@ -17,10 +17,11 @@
         content="Practical building design, construction and real-estate support from OTI-TECH.">
     <title>OTI-TECH | Design • Construction • Real Estate</title>
     <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-    <link rel="preload" as="image" href="img/modern-home-1920.webp" type="image/webp"
-        imagesrcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
+    <link rel="preload" as="image" href="img/context/family-house-hero.webp" type="image/webp"
+        imagesrcset="img/context/family-house.webp 1200w, img/context/family-house-hero.webp 1920w"
         imagesizes="100vw">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/coastal-editorial.css">
     <meta name="otitech-api-base" content="https://otitech-api-prod.fly.dev/api/v1">
     <script type="module">
         import { navigationHTML, initNavigation } from './components/navigation.js';
@@ -44,7 +45,9 @@
                     <nav id="main-nav" aria-label="Main navigation">
                         <a href="index.html">Home</a>
                         <a href="pages/services.html">Services</a>
+                        <a href="pages/build-cost.html">Build Cost</a>
                         <a href="pages/properties.html">Properties</a>
+                        <a href="seller/index.html">List a Property</a>
                         <a href="pages/projects.html">Projects</a>
                         <a href="pages/about.html">About</a>
                         <a href="pages/contact.html">Contact</a>
@@ -62,7 +65,34 @@
 
     <main id="main-content" tabindex="-1">
     <section class="home-hero" id="home" aria-labelledby="hero-title">
+        <div class="hero-carousel" data-hero-carousel aria-label="Architecture and property photography">
+            <figure class="hero-carousel__slide is-active" data-carousel-slide aria-hidden="false">
+                <picture>
+                    <source media="(max-width: 900px)" srcset="img/context/family-house.webp">
+                    <img src="img/context/family-house-hero.webp" alt="" fetchpriority="high" loading="eager" decoding="async">
+                </picture>
+            </figure>
+            <figure class="hero-carousel__slide" data-carousel-slide aria-hidden="true">
+                <img src="img/context/courtyard.webp" alt="" loading="lazy" decoding="async">
+            </figure>
+            <figure class="hero-carousel__slide" data-carousel-slide aria-hidden="true">
+                <img src="img/context/residence-lagos.webp" alt="" loading="lazy" decoding="async">
+            </figure>
+        </div>
         <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-carousel__controls" role="group" aria-label="Hero image controls">
+            <button class="hero-carousel__arrow hero-carousel__arrow--previous" type="button" data-carousel-previous aria-label="Previous hero image">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m14.5 5-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="hero-carousel__arrow hero-carousel__arrow--next" type="button" data-carousel-next aria-label="Next hero image">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m9.5 5 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hero-carousel__pagination" role="group" aria-label="Choose hero image">
+                <button type="button" data-carousel-to="0" aria-label="Show hero image 1 of 3" aria-pressed="true"><span></span></button>
+                <button type="button" data-carousel-to="1" aria-label="Show hero image 2 of 3" aria-pressed="false"><span></span></button>
+                <button type="button" data-carousel-to="2" aria-label="Show hero image 3 of 3" aria-pressed="false"><span></span></button>
+            </div>
+        </div>
 
         <div class="wrap">
             <div class="hero-content">
@@ -71,37 +101,75 @@
                     <span class="kicker-dot"></span>
                     OTI-TECH
                     <span class="kicker-divider"></span>
-                    DESIGN • CONSTRUCTION • REAL ESTATE
+                    DESIGN • CONSTRUCTION • PROPERTY
                 </div>
 
                 <h1 id="hero-title">
-                    Designing spaces.<br>
-                    <span>Building possibilities.</span>
+                    Good spaces start<br>
+                    <span>with good decisions.</span>
                 </h1>
 
                 <p class="hero-lead">
-                    From architectural design and construction to real estate,
-                    OTI-TECH brings your property vision to life with practical,
-                    professional solutions.
+                    From the first sketch to the final handover, we bring design,
+                    construction and property guidance together under one roof.
                 </p>
 
                 <div class="hero-actions">
-                    <a class="btn hero-primary" href="#design">
-                        Start a Project
+                    <a class="btn hero-primary" href="#contact">
+                        Talk through your plans
                         <span class="btn-arrow">→</span>
                     </a>
 
-                    <a class="btn hero-secondary" href="pages/projects.html">
-                        Explore Our Projects
+                    <a class="btn hero-secondary" href="pages/properties.html">
+                        Explore properties
                     </a>
                 </div>
 
                 <div class="hero-note">
-                    <span>Residential</span>
-                    <span>Commercial</span>
-                    <span>Property Solutions</span>
+                    <span>Design &amp; planning</span>
+                    <span>Construction</span>
+                    <span>Property services</span>
                 </div>
 
+            </div>
+
+            <div class="hero-search-panel" aria-labelledby="hero-search-title">
+                <div class="hero-search-heading">
+                    <p class="mini-label">Find your next place</p>
+                    <h2 id="hero-search-title">Explore properties</h2>
+                </div>
+                <form class="property-search" id="property-search-form" role="search" action="pages/properties.html" method="get"
+                    data-results-url="pages/properties.html"
+                    aria-describedby="property-search-help property-search-status">
+                    <div class="search-field">
+                        <label for="property-type">Property type</label>
+                        <select id="property-type" name="property_type">
+                            <option value="">All properties</option>
+                            <option value="land">Land</option>
+                            <option value="house">House</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label for="property-purpose">I want to</label>
+                        <select id="property-purpose" name="property_purpose">
+                            <option value="">Buy or rent</option>
+                            <option value="sale">Buy</option>
+                            <option value="rent">Rent</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label for="property-location">Location</label>
+                        <input type="text" id="property-location" name="property_location" placeholder="City or neighbourhood"
+                            autocomplete="address-level2">
+                    </div>
+                    <button type="submit" class="property-search-btn">
+                        Search properties <span aria-hidden="true">→</span>
+                    </button>
+                    <p class="search-help" id="property-search-help">Browse illustrative listings while live inventory is being prepared.</p>
+                    <p class="search-status" id="property-search-status" role="status" aria-live="polite"></p>
+                </form>
             </div>
         </div>
 
@@ -141,10 +209,10 @@
                 </div>
 
                 <div class="stat">
-                    <strong>24/7</strong>
+                    <strong>04</strong>
                     <div>
-                        <span>CLIENT SUPPORT</span>
-                        <small>We're here when you need us</small>
+                        <span>PROJECT SUPPORT</span>
+                        <small>One team through the process</small>
                     </div>
                 </div>
 
@@ -250,10 +318,9 @@
 
             <div class="service-visual">
                 <div class="service-image-frame">
-                    <img src="img/modern-home-960.webp"
-                        srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                        sizes="(max-width: 900px) 100vw, 50vw" width="8000" height="4578"
-                        alt="Construction team reviewing building plans on site" loading="lazy">
+                    <img src="img/context/architect-sketch.webp"
+                        sizes="(max-width: 900px) 100vw, 50vw" width="1200" height="900"
+                        alt="Architect sketching a building concept" loading="lazy">
                 </div>
 
                 <div class="service-image-label">
@@ -379,10 +446,9 @@
             <div class="construction-visual">
 
                 <div class="construction-image">
-                        <img src="img/modern-home-960.webp"
-                            srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                            sizes="(max-width: 900px) 100vw, 50vw" width="8000" height="4578"
-                            alt="Construction team reviewing building plans on site" loading="lazy">
+                        <img src="img/context/construction-site.webp"
+                            sizes="(max-width: 900px) 100vw, 50vw" width="1200" height="900"
+                            alt="Construction crew working on a building foundation" loading="lazy">
                 </div>
 
                 <div class="construction-badge">
@@ -420,52 +486,6 @@
             </div>
 
 
-            <form class="property-search" id="property-search-form" role="search" action="pages/properties.html" method="get"
-                data-results-url="pages/properties.html"
-                aria-describedby="property-search-help property-search-status">
-
-                <div class="search-field">
-                    <label for="property-type">Property Type</label>
-
-                    <select id="property-type" name="property_type">
-                        <option value="">All Properties</option>
-                        <option value="land">Land</option>
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="commercial">Commercial</option>
-                    </select>
-                </div>
-
-
-                <div class="search-field">
-                    <label for="property-purpose">Purpose</label>
-
-                    <select id="property-purpose" name="property_purpose">
-                        <option value="">Buy or Rent</option>
-                        <option value="sale">For Sale</option>
-                        <option value="rent">For Rent</option>
-                    </select>
-                </div>
-
-
-                <div class="search-field">
-                    <label for="property-location">Location</label>
-
-                    <input type="text" id="property-location" name="property_location" placeholder="Enter location"
-                        autocomplete="address-level2">
-                </div>
-
-
-                <button type="submit" class="property-search-btn">
-                    Browse Property Types
-                    <span aria-hidden="true">→</span>
-                </button>
-
-                <p class="search-help" id="property-search-help">The next page uses clearly labelled sample listings until live inventory is connected.</p>
-                <p class="search-status" id="property-search-status" role="status" aria-live="polite"></p>
-            </form>
-
-
             <div class="property-showcase">
 
                 <article class="property-card property-enquiry-card">
@@ -496,7 +516,7 @@
                     <div class="property-body">
                         <span class="property-tag">COMMERCIAL SPACE</span>
                         <h3>Support your business</h3>
-                        <p>Let us know the kind of workspace, retail space or investment opportunity you are looking for.</p>
+                    <p>Let us know the kind of workspace or retail space you need and where you would like to be.</p>
                         <a href="pages/properties.html?type=commercial">
                             Browse commercial examples <span aria-hidden="true">→</span>
                         </a>
@@ -535,9 +555,8 @@
                 <article class="project-card project-large">
 
                     <div class="project-image">
-                        <img src="img/modern-home-960.webp"
-                            srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                            sizes="(max-width: 600px) 100vw, 50vw" width="8000" height="4578" alt="" loading="lazy">
+                        <img src="img/context/residence-lagos.webp" width="1200" height="900"
+                            alt="Representative image of a contemporary family residence" loading="lazy">
 
                         <div class="project-overlay"></div>
 
@@ -555,9 +574,8 @@
                 <article class="project-card">
 
                     <div class="project-image">
-                        <img src="img/modern-home-960.webp"
-                            srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                            sizes="(max-width: 600px) 100vw, 50vw" width="8000" height="4578" alt="" loading="lazy">
+                        <img src="img/context/bungalow.webp" width="1200" height="900"
+                            alt="Representative image of a detached bungalow" loading="lazy">
 
                         <div class="project-overlay"></div>
 
@@ -575,9 +593,8 @@
                 <article class="project-card">
 
                     <div class="project-image">
-                        <img src="img/modern-home-960.webp"
-                            srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                            sizes="(max-width: 600px) 100vw, 50vw" width="8000" height="4578" alt="" loading="lazy">
+                        <img src="img/context/apartment-lagos.webp" width="1200" height="900"
+                            alt="Representative image of an urban apartment building" loading="lazy">
 
                         <div class="project-overlay"></div>
 
@@ -595,9 +612,8 @@
                 <article class="project-card project-wide">
 
                     <div class="project-image">
-                        <img src="img/modern-home-960.webp"
-                            srcset="img/modern-home-960.webp 960w, img/modern-home-1920.webp 1920w"
-                            sizes="(max-width: 600px) 100vw, 50vw" width="8000" height="4578" alt="" loading="lazy">
+                        <img src="img/context/courtyard.webp" width="1200" height="900"
+                            alt="Representative image of a tropical residential courtyard" loading="lazy">
 
                         <div class="project-overlay"></div>
 

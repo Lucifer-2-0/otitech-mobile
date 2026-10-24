@@ -20,6 +20,7 @@ const BASE_URL = (process.env.SITE_URL || 'https://otitech.com').replace(/\/+$/,
 const staticPages = [
   { url: '/', changefreq: 'weekly', priority: 1.0 },
   { url: '/pages/services.html', changefreq: 'monthly', priority: 0.9 },
+  { url: '/pages/build-cost.html', changefreq: 'weekly', priority: 0.8 },
   { url: '/pages/properties.html', changefreq: 'daily', priority: 0.9 },
   { url: '/pages/projects.html', changefreq: 'weekly', priority: 0.8 },
   { url: '/pages/about.html', changefreq: 'monthly', priority: 0.7 },

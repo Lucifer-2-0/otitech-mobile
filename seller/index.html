@@ -15,49 +15,69 @@
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZXFqdmhzY3FqaXNvc29zZXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2OTUxNjYsImV4cCI6MjEwNjI3MTE2Nn0.YhU2V4Uly0f1bFITGAJU_Vm4Z0UKvSG7dVtoLULY6AQ">
     <script>document.documentElement.classList.add('js-enabled');</script>
 </head>
-<body class="seller-page">
+<body class="seller-page seller-landing-page">
     <a class="skip-link" href="#seller-main">Skip to main content</a>
     <header class="seller-topbar">
         <a class="seller-brand" href="../index.html">OTI-TECH</a>
         <a href="../pages/properties.html">Browse properties</a>
     </header>
     <main id="seller-main" class="seller-auth-layout">
-        <section class="seller-intro">
-            <p class="seller-eyebrow">OTI-TECH SELLER PORTAL</p>
-            <h1>Bring your property to more buyers.</h1>
-            <p>Create a seller account, submit your listing, and track its review status. OTI-TECH checks each listing before it appears publicly.</p>
-            <ul>
-                <li>Your account manages your own property submissions.</li>
-                <li>Listings remain private while they are under review.</li>
-                <li>Buyer enquiries go to OTI-TECH or an assigned moderator.</li>
-            </ul>
-        </section>
-        <section class="seller-auth-card" aria-labelledby="seller-auth-title">
-            <div class="seller-auth-tabs" role="tablist" aria-label="Seller account options">
-                <button type="button" class="is-active" id="showSignIn" role="tab" aria-selected="true" aria-controls="signInPanel">Sign in</button>
-                <button type="button" id="showRegister" role="tab" aria-selected="false" aria-controls="registerPanel">Create account</button>
-            </div>
-            <div id="signInPanel" role="tabpanel" aria-labelledby="showSignIn">
-                <h2 id="seller-auth-title">Welcome back</h2>
-                <form id="sellerSignInForm" class="seller-form">
-                    <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" required></label>
-                    <label class="seller-field">Password<input name="password" type="password" autocomplete="current-password" required></label>
-                    <button class="btn btn-primary" type="submit">Sign in</button>
-                </form>
-            </div>
-            <div id="registerPanel" role="tabpanel" aria-labelledby="showRegister" hidden>
-                <h2>Create your seller account</h2>
-                <form id="sellerRegisterForm" class="seller-form">
-                    <label class="seller-field">Full name<input name="fullName" autocomplete="name" maxlength="255" required></label>
-                    <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" maxlength="255" required></label>
-                    <label class="seller-field">Password<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
-                    <small>Use at least 12 characters with uppercase and lowercase letters, a number, and a symbol.</small>
-                    <button class="btn btn-primary" type="submit">Create seller account</button>
-                </form>
-            </div>
-            <p id="sellerAuthStatus" class="seller-form-status" role="status" aria-live="polite"></p>
-            <p class="seller-auth-footnote">Submitting a property does not publish it. An OTI-TECH admin must approve it first.</p>
-        </section>
+        <div class="seller-auth-content">
+            <section class="seller-intro">
+                <p class="seller-eyebrow">OTI-TECH SELLER PORTAL</p>
+                <h1>Bring your property to more buyers.</h1>
+                <p>Create a seller account, submit your listing, and track its review status. OTI-TECH checks each listing before it appears publicly.</p>
+                <ul>
+                    <li>Your account manages your own property submissions.</li>
+                    <li>Listings remain private while they are under review.</li>
+                    <li>Buyer enquiries go to OTI-TECH or an assigned moderator.</li>
+                </ul>
+            </section>
+            <section class="seller-auth-card" aria-labelledby="seller-auth-title">
+                <div class="seller-auth-tabs" role="tablist" aria-label="Seller account options">
+                    <button type="button" class="is-active" id="showSignIn" role="tab" aria-selected="true" aria-controls="signInPanel">Sign in</button>
+                    <button type="button" id="showRegister" role="tab" aria-selected="false" aria-controls="registerPanel">Create account</button>
+                </div>
+                <div id="signInPanel" role="tabpanel" aria-labelledby="showSignIn">
+                    <h2 id="seller-auth-title">Welcome back</h2>
+                    <form id="sellerSignInForm" class="seller-form">
+                        <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" required></label>
+                        <label class="seller-field">Password<input name="password" type="password" autocomplete="current-password" required></label>
+                        <button class="btn btn-primary" type="submit">Sign in</button>
+                    </form>
+                </div>
+                <div id="registerPanel" role="tabpanel" aria-labelledby="showRegister" hidden>
+                    <h2>Create your seller account</h2>
+                    <form id="sellerRegisterForm" class="seller-form">
+                        <label class="seller-field">Full name<input name="fullName" autocomplete="name" maxlength="255" required></label>
+                        <label class="seller-field">Email address<input name="email" type="email" autocomplete="email" maxlength="255" required></label>
+                        <label class="seller-field">Password<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+                        <small>Use at least 12 characters with uppercase and lowercase letters, a number, and a symbol.</small>
+                        <button class="btn btn-primary" type="submit">Create seller account</button>
+                    </form>
+                </div>
+                <p id="sellerAuthStatus" class="seller-form-status" role="status" aria-live="polite"></p>
+                <p class="seller-auth-footnote">Submitting a property does not publish it. An OTI-TECH admin must approve it first.</p>
+            </section>
+        </div>
+        <figure class="seller-architecture" aria-labelledby="seller-architecture-caption">
+            <img src="../img/context/pantheon-entrance.webp" alt="The monumental bronze entrance doors beneath the Pantheon's coffered stone portico in Rome." fetchpriority="high">
+            <span class="seller-architecture-mark" aria-hidden="true">ARCHITECTURAL STUDY <span>001 / OLYMPUS</span></span>
+            <svg class="seller-architecture-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <defs>
+                    <marker id="seller-callout-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="white" stroke-width="1.2"></path>
+                    </marker>
+                </defs>
+                <path d="M 685 345 H 610 L 315 520" marker-end="url(#seller-callout-arrow)"></path>
+                <circle cx="315" cy="520" r="4"></circle>
+                <path d="M 315 760 H 425 L 815 625" marker-end="url(#seller-callout-arrow)"></path>
+                <circle cx="815" cy="625" r="4"></circle>
+            </svg>
+            <p class="seller-architecture-callout seller-architecture-callout--door"><span>01 / ENTRY</span><strong>Pantheon door</strong></p>
+            <p class="seller-architecture-callout seller-architecture-callout--stone"><span>02 / DETAIL</span><strong>Coffered stone</strong></p>
+            <figcaption id="seller-architecture-caption"><a href="https://commons.wikimedia.org/wiki/File:Pantheon_(Rome)_entrance_door_2.jpg" target="_blank" rel="noreferrer">Pantheon entrance, Rome</a><span>Photo by Wknight94 &copy; <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer">CC BY-SA 3.0</a> - toned for page</span></figcaption>
+        </figure>
     </main>
     <script type="module" src="js/auth.js"></script>
 </body>

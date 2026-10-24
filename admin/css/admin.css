@@ -5,7 +5,7 @@
     --admin-line: #e7e4ef;
     --admin-paper: #fff;
     --admin-canvas: #f6f5fa;
-    --admin-violet: #6a4acb;
+    --admin-violet: #4b2398;
     --admin-red: #b42334;
     --admin-green: #18744b;
     --admin-shadow: 0 18px 48px rgb(34 16 78 / 10%);
@@ -37,7 +37,7 @@ body[data-page^="admin-"] .btn {
 }
 body[data-page^="admin-"] .btn:disabled { cursor: wait; opacity: .6; }
 body[data-page^="admin-"] .btn-primary { background: var(--admin-violet); color: #fff; }
-body[data-page^="admin-"] .btn-primary:hover { background: #5435b2; }
+body[data-page^="admin-"] .btn-primary:hover { background: #3b1c78; }
 body[data-page^="admin-"] .btn-secondary { border-color: #dcd8e8; background: #fff; color: var(--admin-ink); }
 body[data-page^="admin-"] .btn-secondary:hover { border-color: #b9addb; background: #f6f3fc; }
 body[data-page^="admin-"] .btn-danger { border-color: #f0c8cd; background: #fff; color: var(--admin-red); }
@@ -45,8 +45,11 @@ body[data-page^="admin-"] .btn-danger:hover { border-color: var(--admin-red); ba
 body[data-page="admin-login"] .admin-login-form .form-group { display: grid; gap: .4rem; margin: 0; }
 body[data-page="admin-login"] .admin-login-form label { color: var(--admin-ink-soft); font-size: .85rem; font-weight: 700; }
 body[data-page="admin-login"] .admin-login-form input { min-height: 2.9rem; padding: .7rem .75rem; border: 1px solid #dcd8e8; border-radius: .55rem; font: inherit; }
-body[data-page="admin-login"] .admin-login-form input:focus { outline: 3px solid rgb(106 74 203 / 17%); border-color: var(--admin-violet); }
+body[data-page="admin-login"] .admin-login-form input:focus { outline: 3px solid rgb(75 35 152 / 17%); border-color: var(--admin-violet); }
 body[data-page="admin-login"] .admin-login-form input[aria-invalid="true"] { border-color: var(--admin-red); }
+body[data-page="admin-login"] .admin-login-submit { background: var(--admin-violet); color: #fff; }
+body[data-page="admin-login"] .admin-login-submit:hover,
+body[data-page="admin-login"] .admin-login-submit:focus-visible { background: #3b1c78; color: #fff; }
 
 .admin-login-section {
     min-height: 100vh;
@@ -191,7 +194,7 @@ body[data-page="admin-login"] .admin-login-form input[aria-invalid="true"] { bor
 }
 .admin-field textarea { min-height: 5.5rem; resize: vertical; }
 .admin-field small { color: var(--admin-muted); font-size: .74rem; font-weight: 400; }
-.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus, .admin-filter-form input:focus, .admin-filter-form select:focus { outline: 3px solid rgb(106 74 203 / 17%); border-color: var(--admin-violet); }
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus, .admin-filter-form input:focus, .admin-filter-form select:focus { outline: 3px solid rgb(75 35 152 / 17%); border-color: var(--admin-violet); }
 .admin-checkbox { display: flex; align-items: center; gap: .55rem; color: var(--admin-ink-soft); font-size: .86rem; cursor: pointer; }
 .admin-checkbox input { width: 1rem; height: 1rem; accent-color: var(--admin-violet); }
 .admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .95rem; }

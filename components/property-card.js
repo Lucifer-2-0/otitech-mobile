@@ -27,6 +27,13 @@ export const propertyStatuses = {
     let: 'Let'
 };
 
+const propertyImageFallbacks = {
+    land: '../img/context/land-plot.webp',
+    house: '../img/context/residence-lagos.webp',
+    apartment: '../img/context/apartment-interior.webp',
+    commercial: '../img/context/office-interior.webp'
+};
+
 export const sampleProperties = [
     {
         slug: 'ikeja-residential-plot',
@@ -38,7 +45,7 @@ export const sampleProperties = [
         size: '650 sqm',
         price: '185000000.00',
         priceLabel: '₦185M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/development-land.webp',
         summary: 'Prime residential plot in the heart of Ikeja GRA. Flat, dry land with clear title and excellent road access. Ideal for a luxury family home.',
         features: ['Clear C of O', 'Corner plot', 'Perimeter fencing', 'Gated estate'],
         accent: 'plum'
@@ -53,7 +60,7 @@ export const sampleProperties = [
         size: '245 sqm',
         price: '4200000.00',
         priceLabel: '₦4.2M/yr',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/apartment-interior.webp',
         summary: 'Spacious 3-bedroom apartment in a secure, well-managed development. Modern finishes, balcony with lagoon views, 24/7 power backup.',
         features: ['Lagoon views', 'En-suite bedrooms', 'BQ', 'Gym & pool access'],
         accent: 'violet'
@@ -68,7 +75,7 @@ export const sampleProperties = [
         size: '420 sqm (land) / 320 sqm (built)',
         price: '95000000.00',
         priceLabel: '₦95M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/residence-lagos.webp',
         summary: 'Elegant 4-bedroom detached home on a generous plot. Mature garden, borehole, solar system, separate staff quarters. Walking distance to top schools.',
         features: ['Solar + inverter', 'Borehole', 'Staff quarters', 'Mature landscaping'],
         accent: 'sand'
@@ -83,7 +90,7 @@ export const sampleProperties = [
         size: '180 sqm',
         price: '12500000.00',
         priceLabel: '₦12.5M/yr',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/office-interior.webp',
         summary: 'Modern office suite in a prime commercial building. Raised floors, VRF air-conditioning, high-speed fibre, dedicated parking. Suitable for corporate HQ.',
         features: ['Raised floors', 'VRF AC', 'Fibre ready', '24/7 security'],
         accent: 'ink'
@@ -98,7 +105,7 @@ export const sampleProperties = [
         size: '1,200 sqm',
         price: '420000000.00',
         priceLabel: '₦420M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/land-plot.webp',
         summary: 'Strategic corner plot in Yaba\'s tech corridor. Suitable for mixed-use residential/commercial development. High footfall, excellent connectivity.',
         features: ['Corner plot', 'Tech hub location', 'High density approved', 'Fibre infrastructure'],
         accent: 'olive'
@@ -113,8 +120,8 @@ export const sampleProperties = [
         size: '95 sqm',
         price: '42000000.00',
         priceLabel: '₦42M',
-        image: '../img/modern-home-960.webp',
-        summary: 'Well-maintained 2-bedroom apartment in a quiet cul-de-sac. Good for first-time buyers or investment. Recently painted, allocated parking.',
+        image: '../img/context/starter-apartment.webp',
+        summary: 'Well-maintained 2-bedroom apartment in a quiet cul-de-sac. A considered option for first-time buyers, with fresh paint and allocated parking.',
         features: ['Allocated parking', 'Quiet location', 'Good management', 'Near amenities'],
         accent: 'rose'
     },
@@ -128,7 +135,7 @@ export const sampleProperties = [
         size: '580 sqm',
         price: '1200000000.00',
         priceLabel: '₦1.2B',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/urban-building.webp',
         summary: 'Exceptional penthouse with panoramic ocean and city views. Private lift lobby, roof terrace, home automation, wine cellar. 5 en-suite bedrooms.',
         features: ['Ocean views', 'Private lift', 'Roof terrace', 'Smart home', 'Wine cellar'],
         accent: 'violet'
@@ -143,7 +150,7 @@ export const sampleProperties = [
         size: '850 sqm (land) / 1,200 sqm (GFA)',
         price: '680000000.00',
         priceLabel: '₦680M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/retail-plaza.webp',
         summary: 'Multi-level commercial plaza on the Lekki-Epe Expressway. Ground floor retail, upper floors office suites. High visibility, ample parking, strong rental yield.',
         features: ['Expressway frontage', 'Retail + office', 'Parking: 25 cars', 'Generating set'],
         accent: 'ink'
@@ -158,7 +165,7 @@ export const sampleProperties = [
         size: '900 sqm',
         price: '320000000.00',
         priceLabel: '₦320M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/land-plot.webp',
         summary: 'Commercial plot on Opebi Link Road. High vehicular and pedestrian traffic. Suitable for showroom, office building or mixed-use. Regular shape, dry land.',
         features: ['Main road frontage', 'Commercial zoning', 'Dry land', 'Clear title'],
         accent: 'plum'
@@ -176,7 +183,7 @@ export const normalizeProperty = (property) => {
         size: property.size,
         price: property.price,
         priceLabel: property.price_label || property.priceLabel,
-        image: property.images?.find((image) => image.isCover || image.is_cover)?.url || property.images?.[0]?.url || property.image || '../img/modern-home-960.webp',
+        image: property.images?.find((image) => image.isCover || image.is_cover)?.url || property.images?.[0]?.url || property.image || propertyImageFallbacks[property.type] || '../img/context/residence-lagos.webp',
         images: property.images || [],
         summary: property.summary || property.description,
         features: property.features || [],

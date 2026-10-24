@@ -21,6 +21,13 @@ export const projectStatuses = {
     planning: 'Planning'
 };
 
+const projectImageFallbacks = {
+    residential: '../img/context/family-house.webp',
+    commercial: '../img/context/office-tower.webp',
+    mixed_use: '../img/context/urban-courtyard.webp',
+    renovation: '../img/context/heritage-renovation.webp'
+};
+
 export const sampleProjects = [
     {
         slug: 'modern-home-ikeja',
@@ -32,7 +39,7 @@ export const sampleProjects = [
         size: '450 sqm',
         value: '180000000.00',
         valueLabel: '₦180M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/residence-lagos.webp',
         description: 'A contemporary 5-bedroom family home featuring clean lines, natural ventilation, and indoor-outdoor flow. Designed for a young family with entertaining spaces on the ground floor and private quarters above.',
         highlights: ['Passive cooling design', 'Solar PV integration', 'Smart home automation', 'Landscaped garden with irrigation'],
         services: ['building_design', 'construction', 'real_estate'],
@@ -48,7 +55,7 @@ export const sampleProjects = [
         size: '320 sqm',
         value: '95000000.00',
         valueLabel: '₦95M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/bungalow.webp',
         description: 'Single-storey executive residence on a generous corner plot. Accessible design with wide corridors, step-free access throughout, and a focus on ageing-in-place principles.',
         highlights: ['Universal design', 'Borehole & water treatment', 'Backup power system', 'Perimeter security'],
         services: ['building_design', 'construction', 'project_support'],
@@ -64,7 +71,7 @@ export const sampleProjects = [
         size: '2,800 sqm (GFA)',
         value: '2400000000.00',
         valueLabel: '₦2.4B',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/apartment-lagos.webp',
         description: '12-unit luxury apartment building (2, 3 & 4 bedroom units) with shared amenities. RC frame construction, curtain wall glazing, podium parking. Targeting high-end rental market.',
         highlights: ['Curtain wall facade', 'Podium car park', 'Rooftop terrace & pool', 'Building management system'],
         services: ['building_design', 'construction', 'project_support'],
@@ -80,7 +87,7 @@ export const sampleProjects = [
         size: '600 sqm',
         value: '320000000.00',
         valueLabel: '₦320M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/courtyard.webp',
         description: 'Inward-looking courtyard residence providing privacy and tranquility in a dense urban context. Central courtyard organizes circulation and brings light deep into the plan.',
         highlights: ['Central courtyard', 'Cross ventilation', 'Water feature', 'Art integration'],
         services: ['building_design', 'construction'],
@@ -96,7 +103,7 @@ export const sampleProjects = [
         size: '3,500 sqm (GFA)',
         value: '1800000000.00',
         valueLabel: '₦1.8B',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/office-tower.webp',
         description: '7-storey speculative office development. Raised access floors, VRF air-conditioning, double-glazed curtain wall, 3 levels of basement parking. Pre-let to anchor tenant.',
         highlights: ['LEED Gold target', 'Basement parking (3 levels)', 'BMS & access control', 'Retail podium'],
         services: ['building_design', 'construction', 'project_support'],
@@ -112,7 +119,7 @@ export const sampleProjects = [
         size: '4,200 sqm (GFA)',
         value: '3500000000.00',
         valueLabel: '₦3.5B',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/urban-courtyard.webp',
         description: 'Ground-floor retail, 3 floors of co-working/office space, 24 residential units above. Designed for Lagos\'s tech community with high-speed fibre, flexible layouts, and community spaces.',
         highlights: ['Co-working floors', 'Rooftop event space', 'Secure bike storage', 'Fibre-to-the-desk'],
         services: ['building_design', 'project_support'],
@@ -128,7 +135,7 @@ export const sampleProjects = [
         size: '380 sqm',
         value: '220000000.00',
         valueLabel: '₦220M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/heritage-renovation.webp',
         description: 'Sensitive restoration of a 1950s colonial-era residence. Structural repair, facade conservation, modern MEP insertion, and rear extension for contemporary living.',
         highlights: ['Facade retention', 'Structural strengthening', 'MEP integration', 'Heritage compliance'],
         services: ['building_design', 'construction', 'project_support'],
@@ -144,7 +151,7 @@ export const sampleProjects = [
         size: '1,200 sqm (GFA)',
         value: '450000000.00',
         valueLabel: '₦450M',
-        image: '../img/modern-home-960.webp',
+        image: '../img/context/retail-plaza.webp',
         description: 'Two-storey retail plaza on the Lekki-Epe Expressway. Anchor supermarket, line shops, food court, and basement parking. Designed for phased tenant fit-out.',
         highlights: ['Expressway visibility', 'Flexible unit sizes', 'Loading bay access', 'Solar water heating'],
         services: ['building_design', 'construction'],
@@ -163,7 +170,7 @@ export const normalizeProject = (project) => {
         size: project.size,
         value: project.value,
         valueLabel: project.value_label || project.valueLabel || (project.value ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(Number(project.value)) : 'Value not disclosed'),
-        image: project.images?.find((image) => image.isCover || image.is_cover)?.url || project.images?.[0]?.url || project.image || '../img/modern-home-960.webp',
+        image: project.images?.find((image) => image.isCover || image.is_cover)?.url || project.images?.[0]?.url || project.image || projectImageFallbacks[project.category] || '../img/context/residence-lagos.webp',
         images: project.images || [],
         description: project.description,
         highlights: project.highlights || [],

@@ -12,6 +12,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://otitech.com/pages/build-cost.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://otitech.com/pages/properties.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>

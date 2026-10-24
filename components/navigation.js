@@ -2,6 +2,7 @@ export const navigationHTML = (currentPage = 'home', basePath = '') => {
     const navItems = [
         { href: `${basePath}index.html`, label: 'Home', id: 'home' },
         { href: `${basePath}pages/services.html`, label: 'Services', id: 'services' },
+        { href: `${basePath}pages/build-cost.html`, label: 'Build Cost', id: 'build-cost' },
         { href: `${basePath}pages/properties.html`, label: 'Properties', id: 'properties' },
         { href: `${basePath}seller/index.html`, label: 'List a Property', id: 'seller' },
         { href: `${basePath}pages/projects.html`, label: 'Projects', id: 'projects' },
@@ -67,7 +68,7 @@ export const initNavigation = () => {
         }
     });
 
-    const mobileNavigation = window.matchMedia('(max-width: 900px)');
+    const mobileNavigation = window.matchMedia('(max-width: 1024px)');
     mobileNavigation.addEventListener('change', (event) => {
         if (!event.matches) setNavigationOpen(false);
     });

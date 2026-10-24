@@ -2,6 +2,8 @@
 
 OTI-TECH is a property and construction website with a public portfolio, PostgreSQL-backed API, and staff dashboard. The current implementation status and build sequence are in [PROJECT-ROADMAP.md](PROJECT-ROADMAP.md).
 
+The Android app plan and progress tracker are in [ANDROID-APP-ROADMAP.md](ANDROID-APP-ROADMAP.md); mobile-specific setup is in [mobile/README.md](mobile/README.md).
+
 ## Local setup
 
 Requirements: Node.js 20 or later and PostgreSQL.
@@ -34,6 +36,10 @@ Requirements: Node.js 20 or later and PostgreSQL.
 Open `http://localhost:4173/` for the public site and `http://localhost:4173/admin/` for the dashboard. The local preview connects to the API at port 3000. For another host or deployment, set a `meta name="otitech-api-base"` value on the page or route `/api/v1` through the same origin.
 
 The seed command creates the first administrator from `ADMIN_EMAIL`, `ADMIN_FULL_NAME`, and `ADMIN_PASSWORD`; it does not print or set a built-in password. The dashboard supports property and project editing, publishing, image gallery management, enquiry follow-up, and site contact settings.
+
+## Site imagery
+
+The public pages use locally stored, context-matched representative photos. Their source links and license references are recorded in [img/context/IMAGE-SOURCES.md](img/context/IMAGE-SOURCES.md). Sample listings and portfolio entries use illustrative photos; replace these with verified project/listing photos and seller-approved uploads before representing a specific property as available.
 
 ## Seller listings and enquiry access
 

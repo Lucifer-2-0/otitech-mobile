@@ -13,6 +13,7 @@ export const footerHTML = () => `
                 <h3>Explore</h3>
                 <a href="../index.html">Home</a>
                 <a href="pages/services.html">Our Services</a>
+                <a href="/pages/build-cost.html">Build Cost Planner</a>
                 <a href="pages/properties.html">Properties</a>
                 <a href="pages/projects.html">Projects</a>
                 <a href="pages/about.html">About us</a>
