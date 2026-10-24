@@ -1,0 +1,79 @@
+{
+  "expo": {
+    "name": "OTI-TECH",
+    "slug": "otitech-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "otitech",
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.otitech.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "monochromeImage": "./assets/monochrome-icon.png",
+        "backgroundColor": "#24104f"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": {
+            "scheme": "https",
+            "host": "otitech.com",
+            "pathPrefix": "/pages/property-details.html"
+          },
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": {
+            "scheme": "https",
+            "host": "www.otitech.com",
+            "pathPrefix": "/pages/property-details.html"
+          },
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": {
+            "scheme": "https",
+            "host": "otitech.com",
+            "pathPrefix": "/pages/project-details.html"
+          },
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": {
+            "scheme": "https",
+            "host": "www.otitech.com",
+            "pathPrefix": "/pages/project-details.html"
+          },
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f6f1606b-0159-40c1-92a8-8af1178dd4f1"
+      }
+    },
+    "owner": "cyberdrag0n"
+  }
+}
